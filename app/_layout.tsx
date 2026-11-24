@@ -1,12 +1,20 @@
+import '@/global.css';
+
 import { Stack } from 'expo-router';
+import { Inter_400Regular } from '@expo-google-fonts/inter/400Regular';
+import { Inter_500Medium } from '@expo-google-fonts/inter/500Medium';
+import { Inter_600SemiBold } from '@expo-google-fonts/inter/600SemiBold';
+import { Inter_700Bold } from '@expo-google-fonts/inter/700Bold';
+import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import {
   NavigationPreviewProvider,
   useNavigationPreview,
 } from '@/lib/navigation-preview';
+import { ThemeProvider, useTheme, useNavigationStyles } from '@/lib/theme';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -14,38 +22,54 @@ export const unstable_settings = { initialRouteName: '(auth)' };
 
 function RootNavigator() {
   const { isLoading, isPreview } = useNavigationPreview();
+  const { scheme, colors } = useTheme();
+  const navigationStyles = useNavigationStyles();
+  const [fontsLoaded, fontError] = useFonts({
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+  });
 
-  if (isLoading) {
+  if (fontError) throw fontError;
+
+  if (isLoading || !fontsLoaded) {
     return (
-      <View style={styles.loading}>
-        <ActivityIndicator accessibilityLabel="Loading Joti" size="large" />
+      <View className="flex-1 items-center justify-center bg-background">
+        <ActivityIndicator
+          accessibilityLabel="Loading Joti"
+          size="large"
+          color={colors.primary}
+        />
       </View>
     );
   }
 
   return (
-    <Stack screenOptions={{ animation: 'slide_from_right' }}>
-      <Stack.Protected guard={!isPreview} redirectTo="/">
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      </Stack.Protected>
-      <Stack.Protected guard={isPreview} redirectTo="/sign-in">
-        <Stack.Screen name="(protected)" options={{ headerShown: false }} />
-      </Stack.Protected>
-    </Stack>
+    <>
+      <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
+      <Stack
+        screenOptions={{ ...navigationStyles, animation: 'slide_from_right' }}
+      >
+        <Stack.Protected guard={!isPreview} redirectTo="/">
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        </Stack.Protected>
+        <Stack.Protected guard={isPreview} redirectTo="/sign-in">
+          <Stack.Screen name="(protected)" options={{ headerShown: false }} />
+        </Stack.Protected>
+      </Stack>
+    </>
   );
 }
 
 export default function RootLayout() {
   return (
     <SafeAreaProvider>
-      <NavigationPreviewProvider>
-        <StatusBar style="dark" />
-        <RootNavigator />
-      </NavigationPreviewProvider>
+      <ThemeProvider>
+        <NavigationPreviewProvider>
+          <RootNavigator />
+        </NavigationPreviewProvider>
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  loading: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-});

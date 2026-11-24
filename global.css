@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Palette variables are generated from constants/design-tokens.js by Tailwind.
+   Native screens receive the same values through ThemeProvider and vars(). */
+@layer components {
+  .pattern-section {
+    @apply relative overflow-hidden rounded-card border border-border bg-surface;
+  }
+
+  .pattern-overlay {
+    @apply absolute inset-0;
+  }
+
+  .screen-container {
+    @apply mx-auto w-full max-w-screen px-5 py-8 sm:px-6 md:px-8 md:py-12;
+  }
+
+  .reading-container {
+    @apply w-full max-w-reading;
+  }
+
+  .surface-card {
+    @apply rounded-card border border-border bg-surface p-5 md:p-6;
+  }
+
+  .action-row {
+    @apply flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center;
+  }
+
+  .responsive-pair {
+    @apply flex-col gap-4 md:flex-row md:items-start md:gap-6;
+  }
+
+  .control-base {
+    @apply min-h-touch max-w-full flex-row items-center justify-center self-start rounded-control border px-4 py-2;
+  }
+
+  .control-primary {
+    @apply border-primary bg-primary active:border-primary-pressed active:bg-primary-pressed;
+  }
+
+  .control-secondary {
+    @apply border-border bg-surface active:bg-elevated;
+  }
+
+  .control-ghost {
+    @apply border-transparent bg-transparent active:bg-elevated;
+  }
+
+  .inline-link {
+    @apply font-medium text-body text-link underline;
+  }
+
+  .divider {
+    @apply border-b border-border;
+  }
+}

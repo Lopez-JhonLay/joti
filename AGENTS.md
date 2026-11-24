@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-Joti is an Android-first private work journal using Expo and TypeScript, with NativeWind and Convex planned. Read `docs/PRD.md` (scope), `docs/CODING_GUIDELINES.md` (standards), and `docs/TASKS.md` (progress) before implementing changes.
+Joti is an Android-first private work journal using Expo, TypeScript, and NativeWind, with Convex planned. Read `docs/PRD.md` (scope), `docs/CODING_GUIDELINES.md` (standards), `docs/DESIGN_SYSTEM.md` (visual conventions), and `docs/TASKS.md` (progress) before implementing changes.
 
 Follow this structure:
 
@@ -23,6 +23,12 @@ Use strict TypeScript, functional React components, and hooks. Avoid `any`; reus
 
 Use kebab-case filenames (`entry-form.tsx`), PascalCase components/types, camelCase functions/variables, `use`-prefixed hooks, and UPPER_SNAKE_CASE constants. Preserve Expo Router filenames such as `_layout.tsx`. Prefer named exports except where routing requires defaults.
 
+Use semantic NativeWind classes and shared primitives from `components/ui/`. Edit palette/layout tokens in `constants/design-tokens.js`, utility mappings in `tailwind.config.js`, and shared component classes in `global.css`. Keep native navigation colors aligned through `lib/theme.tsx`.
+
+Use `AnimatedIcon` and `Button icon` for icons. Follow the Lucide Animated motion direction through the native Lucide/Animated adapter; do not install DOM/Motion components in the Expo app. Keep labels accessible, animations brief and interaction-driven, and honor the OS reduced-motion preference.
+
+Follow the app-wide motion principles in `docs/DESIGN_SYSTEM.md`: use smooth, fluid transitions wherever they clarify interaction or feedback, support interruption, and never delay user actions for decoration.
+
 ## Testing Guidelines
 
 Do not start an Android emulator or simulator. The user tests manually in Expo Go on their physical phone. Provide `npm start` and instruct them to scan the QR code with the phone and computer on the same Wi-Fi network; let the user run the command. Do not automatically launch Android or start Metro for manual checks. Continue running automated tests and static checks as appropriate.
@@ -31,7 +37,7 @@ Use Jest Expo and React Native Testing Library in `tests/*.test.tsx`; keep tests
 
 ## Commit & Pull Request Guidelines
 
-No Git history is available. Follow the documented prefixes: `feat:`, `fix:`, `refactor:`, `test:`, and `docs:`. Keep commits focused. PRs should explain behavior changes, reference relevant requirements or issues, report validation and limitations, and include screenshots for UI changes.
+Follow the existing `feat:` commit style and documented prefixes: `fix:`, `refactor:`, `test:`, and `docs:`. Keep commits focused. PRs should explain behavior changes, reference relevant requirements or issues, report validation and limitations, and include screenshots for UI changes.
 
 ## Security & Agent Workflow
 

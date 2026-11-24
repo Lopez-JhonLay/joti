@@ -35,8 +35,8 @@ This document tracks the development of **Joti**, a private work journal for doc
 | 6. Testing & Release       | Not Started |
 
 **Current Phase:** Phase 1  
-**Current Task:** 1.3 (awaiting approved UI references)  
-**Overall Status:** In Progress; 1.1 and 1.2 complete
+**Current Task:** 1.4 (not started)  
+**Overall Status:** In Progress; tasks 1.1–1.3 complete
 
 Update progress as development continues.
 
@@ -65,22 +65,22 @@ Update progress as development continues.
 - [x] Add a prominent Add Entry action.
 - [x] Handle loading and navigation transitions.
 
-**Scope note:** Route guards currently use an in-memory, development-only navigation preview. No user is authenticated; production builds cannot enter preview. Real Convex Auth state and backend authorization remain in 1.4–1.5. Styling is neutral scaffolding pending 1.3 references.
+**Scope note:** Route guards currently use an in-memory, development-only navigation preview. No user is authenticated; production builds cannot enter preview. Real Convex Auth state and backend authorization remain in 1.4–1.5. The shared design system is implemented in 1.3.
 
-### 1.3 Styling & Design System
+### 1.3 Styling & Design System — Complete
 
-**Dependency:** User-provided UI reference images/mockups.
+**Reference:** The user supplied https://ramfranco.vercel.app/ instead of images/mockups. Study notes and adaptation decisions are in `docs/DESIGN_SYSTEM.md`.
 
-- [ ] Review approved UI references.
-- [ ] Extract light and dark color tokens.
-- [ ] Define typography, spacing, radius, and layout conventions.
-- [ ] Configure NativeWind.
-- [ ] Implement reusable foundational UI components.
-- [ ] Support light and dark themes.
-- [ ] Verify layouts on different Android screen sizes.
-- [ ] Prepare optional mascot assets and placements.
+- [x] Review approved UI references.
+- [x] Extract light and dark color tokens.
+- [x] Define typography, spacing, radius, and layout conventions.
+- [x] Configure NativeWind.
+- [x] Implement reusable foundational UI components.
+- [x] Support light and dark themes.
+- [x] Verify responsive layouts through automated viewport checks and user phone review.
+- [x] Prepare optional mascot assets and document intended placements.
 
-Do not invent final brand visuals before reviewing references.
+Responsive compiled-style checks cover 320, 390, 768, and 1024 logical points. On 2026-11-24, the user confirmed the current design looks fine in Expo Go and approved marking 1.3 complete. This records acceptance of the current phone review, not an exhaustive physical-device/font-scale/keyboard test matrix. The original 2D mascot sheet, nine separate transparent poses, and intended-use map are saved in `assets/mascot/joti-2d/`; screen integration remains deferred. The website study used source retrieval rather than computer control.
 
 ### 1.4 Convex Setup
 
@@ -105,9 +105,9 @@ Do not invent final brand visuals before reviewing references.
 
 **Phase 1 Completion Criteria**
 
-- [ ] App launches successfully on Android.
-- [ ] Navigation works.
-- [ ] Light and dark themes work.
+- [x] App launches successfully on Android.
+- [x] Navigation works.
+- [x] Light and dark themes work.
 - [ ] Google sign-in and sign-out work.
 - [ ] Protected screens require authentication.
 - [ ] Convex connection is functional.
@@ -515,12 +515,12 @@ These are future ideas, not active development tasks.
 
 Track unresolved issues here.
 
-| Date | Issue / Decision                                      | Status  | Resolution              |
-| ---- | ----------------------------------------------------- | ------- | ----------------------- |
-| —    | Expo Android + Convex Auth Google OAuth compatibility | Pending | Validate in Phase 1     |
-| —    | Final UI tokens and responsive behavior               | Pending | Review supplied mockups |
-| —    | Inactivity timeout duration                           | Pending | Define before Phase 5   |
-| —    | Authorized private attachment delivery                | Pending | Design before Phase 4   |
+| Date       | Issue / Decision                                      | Status   | Resolution                                                                                   |
+| ---------- | ----------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------- |
+| —          | Expo Android + Convex Auth Google OAuth compatibility | Pending  | Validate in Phase 1                                                                          |
+| 2026-11-24 | UI tokens and responsive behavior                     | Accepted | Website reference adapted; automated checks pass; user approved current Expo Go phone review |
+| —          | Inactivity timeout duration                           | Pending  | Define before Phase 5                                                                        |
+| —          | Authorized private attachment delivery                | Pending  | Design before Phase 4                                                                        |
 
 Add new blockers only when they affect implementation.
 
@@ -529,6 +529,16 @@ Add new blockers only when they affect implementation.
 ## 4. Progress Log
 
 Update after completing meaningful tasks or milestones.
+
+### 2026-11-24 — Phase 1.3 design system
+
+**Completed:** Studied the supplied website with search and HTML/CSS retrieval. Added independently sourced Inter fonts, stable NativeWind 4 / Tailwind 3, semantic light/dark palettes, shared tokens and reusable primitives, system/session theme selection, themed navigation/status bars, dotted section backgrounds, compact pill buttons, clipped pill navigation, a fluid active-tab indicator, and native animated Lucide icons. Documented app-wide motion principles and reduced-motion behavior. Prepared the selected original 2D notebook mascot as one combined action sheet and nine separate transparent PNGs with an intended-use map. Applied the design system to the preview screens without implementing later-phase features.
+
+**Verification:** TypeScript, ESLint, formatting, Tailwind compilation, Expo dependency compatibility, 18 tests, and Android production bundle export. Tests cover compiled styles, themes, contrast, disabled/busy semantics, responsive breakpoints, clipped tab layers, icon replay, indicator motion, and reduced-motion behavior. Mascot extraction checks verified dimensions, transparency, and original pixels. No emulator, computer control, or manual-preview server was started for this task.
+
+**Acceptance:** The user completed a phone review in Expo Go, accepted the current design, and explicitly requested marking 1.3 done and committing/pushing the work. Further device-matrix testing and mascot screen integration remain future work.
+
+**Next:** Task 1.4 — Convex Setup (not started).
 
 ### 2026-11-23 — Phase 1.1–1.2
 

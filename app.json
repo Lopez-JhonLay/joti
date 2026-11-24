@@ -6,8 +6,10 @@
     "scheme": "joti",
     "orientation": "portrait",
     "platforms": ["android"],
-    "userInterfaceStyle": "light",
-    "plugins": ["expo-router"],
-    "experiments": { "typedRoutes": true }
+    "userInterfaceStyle": "automatic",
+    "plugins": ["expo-router", "expo-font", "expo-asset"],
+    "experiments": {
+      "typedRoutes": true
+    }
   }
 }

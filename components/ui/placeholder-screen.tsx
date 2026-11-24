@@ -1,35 +1,56 @@
 import type { PropsWithChildren } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Container, Divider } from '@/components/ui/layout';
+import { Typography } from '@/components/ui/typography';
+import { DotPattern } from '@/components/ui/dot-pattern';
 
 type PlaceholderScreenProps = PropsWithChildren<{
   title: string;
   description: string;
+  patterned?: boolean;
 }>;
 
-// Neutral scaffolding only; the approved design system belongs to Phase 1.3.
 export function PlaceholderScreen({
   title,
   description,
   children,
+  patterned = false,
 }: PlaceholderScreenProps) {
+  const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView style={styles.container} edges={['left', 'right', 'bottom']}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <Text accessibilityRole="header" style={styles.title}>
-          {title}
-        </Text>
-        <Text style={styles.description}>{description}</Text>
-        <View style={styles.actions}>{children}</View>
+    <View
+      className="flex-1 bg-background"
+      style={{ paddingLeft: insets.left, paddingRight: insets.right }}
+    >
+      <ScrollView
+        contentContainerClassName="grow"
+        contentContainerStyle={{ paddingBottom: insets.bottom }}
+        keyboardShouldPersistTaps="handled"
+        automaticallyAdjustKeyboardInsets
+      >
+        <Container className="gap-8">
+          <View className={patterned ? 'pattern-section' : ''}>
+            {patterned && <DotPattern />}
+            <View
+              className={`reading-container gap-4 ${patterned ? 'p-6 sm:p-8' : ''}`}
+            >
+              <Typography
+                variant="caption"
+                className="uppercase tracking-widest text-link"
+              >
+                Joti / Work journal
+              </Typography>
+              <Typography accessibilityRole="header" variant="display">
+                {title}
+              </Typography>
+              <Typography variant="lead">{description}</Typography>
+            </View>
+          </View>
+          <Divider />
+          <View className="gap-6">{children}</View>
+        </Container>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  content: { padding: 24, gap: 16 },
-  title: { fontSize: 28, fontWeight: '600', color: '#111' },
-  description: { fontSize: 16, lineHeight: 24, color: '#444' },
-  actions: { gap: 16 },
-});

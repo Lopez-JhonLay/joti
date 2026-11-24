@@ -1,5 +1,8 @@
-import { ConvexProvider, ConvexReactClient } from 'convex/react';
+import { ConvexReactClient } from 'convex/react';
+import { ConvexAuthProvider } from '@convex-dev/auth/react';
 import { createContext, useContext, type PropsWithChildren } from 'react';
+import { api } from '@/convex/_generated/api';
+import { secureStorage } from './secure-storage';
 
 const url = process.env.EXPO_PUBLIC_CONVEX_URL;
 const client = url
@@ -15,7 +18,14 @@ export function BackendProvider({ children }: PropsWithChildren) {
   return (
     <BackendConfiguredContext.Provider value={client !== null}>
       {client ? (
-        <ConvexProvider client={client}>{children}</ConvexProvider>
+        <ConvexAuthProvider
+          client={client}
+          api={api.auth}
+          storage={secureStorage}
+          ambientSignIns={[]}
+        >
+          {children}
+        </ConvexAuthProvider>
       ) : (
         children
       )}

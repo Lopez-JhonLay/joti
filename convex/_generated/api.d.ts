@@ -10,7 +10,9 @@
 
 import type * as auth from "../auth.js";
 import type * as health from "../health.js";
+import type * as http from "../http.js";
 import type * as lib_auth from "../lib/auth.js";
+import type * as lib_mobile_auth from "../lib/mobile_auth.js";
 import type * as users from "../users.js";
 
 import type {
@@ -22,7 +24,9 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   health: typeof health;
+  http: typeof http;
   "lib/auth": typeof lib_auth;
+  "lib/mobile_auth": typeof lib_mobile_auth;
   users: typeof users;
 }>;
 
@@ -54,4 +58,5 @@ export declare const internal: FilterApi<
 
 export declare const components: {
   auth: import("@convex-dev/auth/_generated/component.js").ComponentApi<"auth">;
+  authGoogle: import("@convex-dev/auth/components/google/_generated/component.js").ComponentApi<"authGoogle">;
 };

@@ -27,16 +27,16 @@ This document tracks the development of **Joti**, a private work journal for doc
 
 | Phase                      | Status      |
 | -------------------------- | ----------- |
-| 1. Project Foundation      | In Progress |
+| 1. Project Foundation      | Complete    |
 | 2. Companies & Projects    | Not Started |
 | 3. Core Journal & Autosave | Not Started |
 | 4. History & Attachments   | Not Started |
 | 5. Data Management         | Not Started |
 | 6. Testing & Release       | Not Started |
 
-**Current Phase:** Phase 1  
-**Current Task:** 1.5 (not started)  
-**Overall Status:** In Progress; tasks 1.1–1.4 complete
+**Current Phase:** Phase 2 (not started)  
+**Current Task:** Next: 2.1 Database Schema (not started)  
+**Overall Status:** In Progress; Phase 1 complete
 
 Update progress as development continues.
 
@@ -65,7 +65,7 @@ Update progress as development continues.
 - [x] Add a prominent Add Entry action.
 - [x] Handle loading and navigation transitions.
 
-**Scope note:** Route guards currently use an in-memory, development-only navigation preview. No user is authenticated; production builds cannot enter preview. Real Convex Auth state and backend authorization remain in 1.4–1.5. The shared design system is implemented in 1.3.
+**Scope note:** Task 1.2 initially used an in-memory navigation preview. Tasks 1.4–1.5 now provide real Convex Auth state, secure sessions, and backend authorization. The development-only design preview remains separate and grants no backend identity; production builds cannot enter preview. The shared design system is implemented in 1.3.
 
 ### 1.3 Styling & Design System — Complete
 
@@ -93,26 +93,30 @@ Responsive compiled-style checks cover 320, 390, 768, and 1024 logical points. O
 
 Initialized the personal team's `joti` cloud project and development deployment `harmless-rhinoceros-278`. Convex Auth v2 provides session infrastructure; shared helpers enforce authenticated identity and ownership. The root app provider and development Settings connection check use generated API types. The live WebSocket smoke check confirms service health, signed-out state, and protected-query rejection. Automated tests cover ownership, missing configuration, retry, and disconnected status. Setup commands and environment handling are documented in `docs/CONVEX_SETUP.md`. Google OAuth, session persistence, and real route authentication remain in 1.5; no additional manual Convex setup is required for 1.4.
 
-### 1.5 Google Authentication
+### 1.5 Google Authentication — Complete
 
-- [ ] Validate Convex Auth + Google OAuth compatibility with Expo Android.
-- [ ] Configure Google OAuth credentials and redirect handling.
-- [ ] Implement Google sign-in.
-- [ ] Implement secure session persistence.
-- [ ] Implement manual sign-out.
-- [ ] Protect authenticated application screens.
-- [ ] Handle authentication loading and failure states.
-- [ ] Verify session persistence after app restart.
-- [ ] Document the supported inactivity expiration approach.
+- [x] Validate Convex Auth + Google OAuth compatibility with Expo Android.
+- [x] Configure Google OAuth credentials and redirect handling.
+- [x] Implement Google sign-in.
+- [x] Implement secure session persistence.
+- [x] Implement manual sign-out.
+- [x] Protect authenticated application screens.
+- [x] Handle authentication loading and failure states.
+- [x] Verify session persistence after app restart.
+- [x] Document the supported inactivity expiration approach.
+
+Implementation uses Convex Auth v2's Google component, a fixed HTTPS-to-native callback bridge, SecureStore-backed tokens and pending OAuth state, session-aware route guards, and manual sign-out. Automated coverage includes cancellation, duplicate callbacks, simulated process restart, expired sessions, ownership, and private-route removal. The development-only design preview remains unauthenticated; backend authorization never accepts it. Server policy is seven days without a refresh and a 30-day absolute lifetime, not a last-touch timer. See `docs/GOOGLE_AUTH_SETUP.md` for setup and verification details. The user reported a passing live `auth:check` after configuring credentials/deployment. Fixed Windows Ninja path overflow through a persistent Expo config plugin; the ARM64 debug APK compiles successfully.
+
+**Phone acceptance (2026-11-24):** The user successfully signed in with Google and observed the Convex connection, then confirmed all three requested checks passed: force-close/reopen preserves the signed-in session; manual sign-out returns to sign-in and Back cannot reopen private screens; close/reopen after sign-out preserves signed-out state. Together with 54 passing automated tests, static checks, Android export, and the native APK build, this completes task 1.5 and Phase 1. Additional browser-interruption, network/revocation, and full device-matrix checks remain release-hardening coverage, not claimed as completed physical-phone tests here.
 
 **Phase 1 Completion Criteria**
 
 - [x] App launches successfully on Android.
 - [x] Navigation works.
 - [x] Light and dark themes work.
-- [ ] Google sign-in and sign-out work.
-- [ ] Protected screens require authentication.
-- [ ] Convex connection is functional.
+- [x] Google sign-in and sign-out work.
+- [x] Protected screens require authentication.
+- [x] Convex connection is functional.
 
 **Deliverable:** Authenticated Joti application shell.
 

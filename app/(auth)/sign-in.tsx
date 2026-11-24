@@ -6,9 +6,11 @@ import { Typography } from '@/components/ui/typography';
 
 import { PlaceholderScreen } from '@/components/ui/placeholder-screen';
 import { useNavigationPreview } from '@/lib/navigation-preview';
+import { useAuthSession } from '@/lib/auth-session';
 
 export default function SignInScreen() {
   const { enterPreview } = useNavigationPreview();
+  const { signIn, isSigningIn, unavailableReason, error } = useAuthSession();
   const insets = useSafeAreaInsets();
 
   return (
@@ -39,13 +41,29 @@ export default function SignInScreen() {
               One place. Your perspective.
             </Typography>
             <Typography className="text-muted">
-              Google sign-in will be connected in Phase 1.5. For now, explore
-              the journal shell.
+              Sign in with Google to keep your work journal private and return
+              to your progress whenever you need it.
             </Typography>
+            <Button
+              title="Continue with Google"
+              onPress={() => void signIn()}
+              loading={isSigningIn}
+              disabled={!!unavailableReason}
+            />
+            {unavailableReason && (
+              <Typography variant="caption">{unavailableReason}</Typography>
+            )}
+            {error && (
+              <Typography accessibilityRole="alert" className="text-danger">
+                {error}
+              </Typography>
+            )}
             {__DEV__ && (
               <Button
                 title="Preview navigation"
                 icon="notebook-pen"
+                variant="secondary"
+                disabled={isSigningIn}
                 onPress={enterPreview}
               />
             )}

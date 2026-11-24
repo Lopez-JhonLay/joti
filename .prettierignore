@@ -6,3 +6,4 @@ package-lock.json
 android/
 ios/
 convex/_generated/
+.cxx/

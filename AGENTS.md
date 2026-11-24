@@ -21,7 +21,7 @@ Use Node.js 24 LTS and npm with `package-lock.json`. Run `npm ci` to install dep
 
 Use strict TypeScript, functional React components, and hooks. Avoid `any`; reuse generated Convex types. Use two-space indentation when establishing formatting, centralized Prettier configuration, and Expo-compatible ESLint rules.
 
-Use kebab-case filenames (`entry-form.tsx`), PascalCase components/types, camelCase functions/variables, `use`-prefixed hooks, and UPPER_SNAKE_CASE constants. Preserve Expo Router filenames such as `_layout.tsx`. Prefer named exports except where routing requires defaults.
+Use kebab-case filenames (`entry-form.tsx`), PascalCase components/types, camelCase functions/variables, `use`-prefixed hooks, and UPPER_SNAKE_CASE constants. Convex function paths require underscores instead of hyphens (`convex/lib/mobile_auth.ts`). Preserve Expo Router filenames such as `_layout.tsx`. Prefer named exports except where routing requires defaults.
 
 Use semantic NativeWind classes and shared primitives from `components/ui/`. Edit palette/layout tokens in `constants/design-tokens.js`, utility mappings in `tailwind.config.js`, and shared component classes in `global.css`. Keep native navigation colors aligned through `lib/theme.tsx`.
 
@@ -31,7 +31,7 @@ Follow the app-wide motion principles in `docs/DESIGN_SYSTEM.md`: use smooth, fl
 
 ## Testing Guidelines
 
-Do not start an Android emulator or simulator. The user tests manually in Expo Go on their physical phone. Provide `npm start` and instruct them to scan the QR code with the phone and computer on the same Wi-Fi network; let the user run the command. Do not automatically launch Android or start Metro for manual checks. Continue running automated tests and static checks as appropriate.
+Do not start an Android emulator or simulator, launch Android, or start Metro for manual checks. The user runs phone checks themselves. For Expo Go design previews, provide `npm run start:go` and instructions to scan the QR code on the same Wi-Fi. Google OAuth requires Joti's physical-phone development build, not Expo Go: explain this distinction and provide `npm run build:android -- --device` for the user to build/install on their connected phone, followed by `npm run start:dev` for later sessions. See `docs/GOOGLE_AUTH_SETUP.md`. Continue running automated checks and bundle exports as appropriate.
 
 Use Jest Expo and React Native Testing Library in `tests/*.test.tsx`; keep tests outside `app/`. Navigation integration tests cover guarded deep links, tabs, modal navigation, and preview exit. As features arrive, prioritize validation, cross-user authorization, stale autosaves, retry behavior, attachments, Trash, and CSV escaping. No percentage threshold is specified.
 
@@ -41,4 +41,4 @@ Follow the existing `feat:` commit style and documented prefixes: `fix:`, `refac
 
 ## Security & Agent Workflow
 
-Enforce ownership and input validation on the backend. Never log credentials or private journal content. Validate Expo compatibility with Convex Auth and Google OAuth before dependent work. Follow approved design references and keep implementation within the PRD's MVP scope.
+Enforce ownership and input validation on the backend. Never log credentials or private journal content. Keep Google OAuth secrets in Convex environment variables. Use the fixed HTTPS callback bridge and SecureStore-backed Convex Auth v2 sessions; preview grants no backend identity. Task 1.5 phone acceptance is recorded in `docs/TASKS.md`; distinguish user-confirmed device checks from automated tests and untested release-hardening scenarios. Follow approved design references and keep implementation within the PRD's MVP scope.

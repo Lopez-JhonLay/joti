@@ -4,10 +4,18 @@
     "slug": "joti",
     "version": "0.1.0",
     "scheme": "joti",
+    "android": { "package": "com.lopezjhonlay.joti" },
     "orientation": "portrait",
     "platforms": ["android"],
     "userInterfaceStyle": "automatic",
-    "plugins": ["expo-router", "expo-font", "expo-asset"],
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-asset",
+      "expo-secure-store",
+      "expo-web-browser",
+      "./plugins/with-windows-native-paths"
+    ],
     "experiments": {
       "typedRoutes": true
     }

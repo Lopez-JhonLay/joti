@@ -8,5 +8,6 @@ export default defineSchema({
     name: v.optional(v.string()),
     email: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
+    createdAt: v.optional(v.number()),
   }),
 });

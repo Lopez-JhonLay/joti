@@ -10,7 +10,7 @@ type NavigationPreview = {
 
 const NavigationPreviewContext = createContext<NavigationPreview | null>(null);
 
-// Temporary navigation harness. Replace with Convex Auth state in Phase 1.5.
+// Development-only design harness, separate from the real Convex Auth session.
 // Preview grants no identity, persistence, or backend access.
 export function NavigationPreviewProvider({ children }: PropsWithChildren) {
   const [isPreview, setIsPreview] = useState(false);

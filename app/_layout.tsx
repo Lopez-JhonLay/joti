@@ -16,13 +16,16 @@ import {
 } from '@/lib/navigation-preview';
 import { ThemeProvider, useTheme, useNavigationStyles } from '@/lib/theme';
 import { BackendProvider } from '@/lib/convex-provider';
+import { AuthSessionProvider, useAuthSession } from '@/lib/auth-session';
 
 export { ErrorBoundary } from 'expo-router';
 
 export const unstable_settings = { initialRouteName: '(auth)' };
 
 function RootNavigator() {
-  const { isLoading, isPreview } = useNavigationPreview();
+  const { isPreview } = useNavigationPreview();
+  const { isLoading, isAuthenticated } = useAuthSession();
+  const hasAccess = isAuthenticated || isPreview;
   const { scheme, colors } = useTheme();
   const navigationStyles = useNavigationStyles();
   const [fontsLoaded, fontError] = useFonts({
@@ -52,10 +55,10 @@ function RootNavigator() {
       <Stack
         screenOptions={{ ...navigationStyles, animation: 'slide_from_right' }}
       >
-        <Stack.Protected guard={!isPreview} redirectTo="/">
+        <Stack.Protected guard={!hasAccess} redirectTo="/">
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         </Stack.Protected>
-        <Stack.Protected guard={isPreview} redirectTo="/sign-in">
+        <Stack.Protected guard={hasAccess} redirectTo="/sign-in">
           <Stack.Screen name="(protected)" options={{ headerShown: false }} />
         </Stack.Protected>
       </Stack>
@@ -68,9 +71,11 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <ThemeProvider>
         <BackendProvider>
-          <NavigationPreviewProvider>
-            <RootNavigator />
-          </NavigationPreviewProvider>
+          <AuthSessionProvider>
+            <NavigationPreviewProvider>
+              <RootNavigator />
+            </NavigationPreviewProvider>
+          </AuthSessionProvider>
         </BackendProvider>
       </ThemeProvider>
     </SafeAreaProvider>

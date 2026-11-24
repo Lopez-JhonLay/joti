@@ -6,7 +6,7 @@ Joti uses Convex cloud development with Convex Auth v2. The personal team's `jot
 
 1. Install dependencies with `npm ci` (Node 24).
 2. Run `npm run convex:dev` in one terminal. On a new machine, log in and select the existing personal-team `joti` project and a development deployment. The CLI writes `.env.local`, including `CONVEX_DEPLOYMENT`, `EXPO_PUBLIC_CONVEX_URL`, and `EXPO_PUBLIC_CONVEX_SITE_URL`.
-3. Run `npm start` in another terminal. Scan the QR code in Expo Go on your phone, on the same Wi-Fi. Restart Metro after changing environment variables. Do not start an emulator.
+3. For Google sign-in, install the phone development build and run `npm run start:dev`; see `docs/GOOGLE_AUTH_SETUP.md`. For design previews in Expo Go, use `npm run start:go` and scan the QR code on your phone on the same Wi-Fi. Restart Metro after changing environment variables. Do not start an emulator.
 
 The existing local deployment is `harmless-rhinoceros-278`. Open its [dashboard](https://dashboard.convex.dev/t/jhon-lopez/joti/harmless-rhinoceros-278) to inspect functions and data.
 
@@ -29,4 +29,4 @@ Use `lib/auth.ts` to resolve the live server session and enforce record ownershi
 
 Keep `.env.local` and `.convex/` out of Git. `.env.example` documents configuration. `EXPO_PUBLIC_` variables are bundled into the app and must contain only public URLs, never credentials or deploy keys. Store future OAuth secrets in Convex environment variables.
 
-Google credentials, OAuth redirects, secure mobile session persistence, and authenticated route guards are task 1.5. No Google sign-in is enabled yet. Convex Auth v2 uses platform-signed tokens; do not follow legacy v1 instructions for manually generating JWT signing keys.
+Task 1.5 adds the Google OAuth component and requires `AUTH_GOOGLE_CLIENT_ID` and `AUTH_GOOGLE_CLIENT_SECRET` in the Convex deployment before pushing its backend changes. See `docs/GOOGLE_AUTH_SETUP.md` for setup and the remaining phone checks. Convex Auth v2 uses platform-signed tokens; do not follow legacy v1 instructions for manually generating JWT signing keys.

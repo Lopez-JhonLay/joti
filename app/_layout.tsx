@@ -15,6 +15,7 @@ import {
   useNavigationPreview,
 } from '@/lib/navigation-preview';
 import { ThemeProvider, useTheme, useNavigationStyles } from '@/lib/theme';
+import { BackendProvider } from '@/lib/convex-provider';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -66,9 +67,11 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <NavigationPreviewProvider>
-          <RootNavigator />
-        </NavigationPreviewProvider>
+        <BackendProvider>
+          <NavigationPreviewProvider>
+            <RootNavigator />
+          </NavigationPreviewProvider>
+        </BackendProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );

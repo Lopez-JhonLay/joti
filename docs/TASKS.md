@@ -35,8 +35,8 @@ This document tracks the development of **Joti**, a private work journal for doc
 | 6. Testing & Release       | Not Started |
 
 **Current Phase:** Phase 1  
-**Current Task:** 1.4 (not started)  
-**Overall Status:** In Progress; tasks 1.1–1.3 complete
+**Current Task:** 1.5 (not started)  
+**Overall Status:** In Progress; tasks 1.1–1.4 complete
 
 Update progress as development continues.
 
@@ -82,14 +82,16 @@ Update progress as development continues.
 
 Responsive compiled-style checks cover 320, 390, 768, and 1024 logical points. On 2026-11-24, the user confirmed the current design looks fine in Expo Go and approved marking 1.3 complete. This records acceptance of the current phone review, not an exhaustive physical-device/font-scale/keyboard test matrix. The original 2D mascot sheet, nine separate transparent poses, and intended-use map are saved in `assets/mascot/joti-2d/`; screen integration remains deferred. The website study used source retrieval rather than computer control.
 
-### 1.4 Convex Setup
+### 1.4 Convex Setup — Complete
 
-- [ ] Initialize Convex.
-- [ ] Configure development environment variables.
-- [ ] Set up Convex code generation.
-- [ ] Establish domain-based backend structure.
-- [ ] Configure authentication and authorization helpers.
-- [ ] Verify frontend-to-Convex communication.
+- [x] Initialize Convex.
+- [x] Configure development environment variables.
+- [x] Set up Convex code generation.
+- [x] Establish domain-based backend structure.
+- [x] Configure authentication and authorization helpers.
+- [x] Verify frontend-to-Convex communication.
+
+Initialized the personal team's `joti` cloud project and development deployment `harmless-rhinoceros-278`. Convex Auth v2 provides session infrastructure; shared helpers enforce authenticated identity and ownership. The root app provider and development Settings connection check use generated API types. The live WebSocket smoke check confirms service health, signed-out state, and protected-query rejection. Automated tests cover ownership, missing configuration, retry, and disconnected status. Setup commands and environment handling are documented in `docs/CONVEX_SETUP.md`. Google OAuth, session persistence, and real route authentication remain in 1.5; no additional manual Convex setup is required for 1.4.
 
 ### 1.5 Google Authentication
 

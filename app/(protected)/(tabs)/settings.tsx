@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { ConvexStatus } from '@/components/ui/convex-status';
 import { ThemePicker } from '@/components/ui/theme-picker';
 
 import { PlaceholderScreen } from '@/components/ui/placeholder-screen';
@@ -13,6 +14,7 @@ export default function SettingsScreen() {
       description="Account, export, Trash, and preferences will be added in later phases. No account is signed in."
     >
       <ThemePicker />
+      {__DEV__ && <ConvexStatus />}
       {__DEV__ && (
         <Button
           title="Exit preview"

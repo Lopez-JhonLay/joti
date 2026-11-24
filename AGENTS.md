@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-Joti is an Android-first private work journal using Expo, TypeScript, and NativeWind, with Convex planned. Read `docs/PRD.md` (scope), `docs/CODING_GUIDELINES.md` (standards), `docs/DESIGN_SYSTEM.md` (visual conventions), and `docs/TASKS.md` (progress) before implementing changes.
+Joti is an Android-first private work journal using Expo, TypeScript, NativeWind, and Convex. Read `docs/PRD.md` (scope), `docs/CODING_GUIDELINES.md` (standards), `docs/DESIGN_SYSTEM.md` (visual conventions), and `docs/TASKS.md` (progress) before implementing changes.
 
 Follow this structure:
 
@@ -15,7 +15,7 @@ Keep business logic out of route files and avoid unnecessary service layers.
 
 ## Build, Test, and Development Commands
 
-Use Node.js 24 LTS and npm with `package-lock.json`. Run `npm ci` to install dependencies, `npm start` for Metro, and `npm run android` to launch Expo Go on Android. Run `npm run check` for TypeScript, ESLint, and Prettier; `npm test` for navigation integration tests; and `npm run format` to format files. `npm run export:android` bundles JavaScript/assets; `npm run build:android` compiles a local debug app with Android SDK/JDK. Convex is not configured yet.
+Use Node.js 24 LTS and npm with `package-lock.json`. Run `npm ci` to install dependencies and `npm start` for Metro. Run `npm run check` for frontend/backend TypeScript, ESLint, and Prettier; `npm test` for automated tests; and `npm run format` to format files. `npm run export:android` bundles JavaScript/assets; `npm run build:android` compiles a local debug app with Android SDK/JDK. Run `npm run convex:dev` separately for backend development, `npm run convex:push` for a one-time development deployment, and `npm run convex:check` for live connectivity/anonymous authorization checks. See `docs/CONVEX_SETUP.md`; commit generated Convex types and keep environment files private.
 
 ## Coding Style & Naming Conventions
 

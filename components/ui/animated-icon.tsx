@@ -12,6 +12,12 @@ import Plus from 'lucide-react-native/icons/plus';
 import Settings from 'lucide-react-native/icons/settings';
 import Sun from 'lucide-react-native/icons/sun';
 import X from 'lucide-react-native/icons/x';
+import ArrowLeft from 'lucide-react-native/icons/arrow-left';
+import Calendar from 'lucide-react-native/icons/calendar';
+import ChevronRight from 'lucide-react-native/icons/chevron-right';
+import Pencil from 'lucide-react-native/icons/pencil';
+import Trash2 from 'lucide-react-native/icons/trash-2';
+import Archive from 'lucide-react-native/icons/archive';
 
 import { useTheme } from '@/lib/theme';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
@@ -28,6 +34,12 @@ const icons = {
   'log-out': LogOut,
   'notebook-pen': NotebookPen,
   x: X,
+  'arrow-left': ArrowLeft,
+  calendar: Calendar,
+  'chevron-right': ChevronRight,
+  pencil: Pencil,
+  'trash-2': Trash2,
+  archive: Archive,
 };
 
 export type AnimatedIconName = keyof typeof icons;
@@ -80,7 +92,7 @@ export function AnimatedIcon({
           : name === 'sun'
             ? 45
             : 0;
-    const pulseRotation = name === 'moon' || name === 'x';
+    const pulseRotation = name === 'moon' || name === 'x' || name === 'pencil';
     return {
       transform: [
         {
@@ -106,7 +118,15 @@ export function AnimatedIcon({
         {
           translateX: progress.interpolate({
             inputRange: [0, 0.5, 1],
-            outputRange: [0, name === 'log-out' ? 3 : 0, 0],
+            outputRange: [
+              0,
+              name === 'arrow-left'
+                ? -3
+                : name === 'log-out' || name === 'chevron-right'
+                  ? 3
+                  : 0,
+              0,
+            ],
           }),
         },
         {

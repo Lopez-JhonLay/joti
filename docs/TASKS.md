@@ -28,15 +28,17 @@ This document tracks the development of **Joti**, a private work journal for doc
 | Phase                      | Status      |
 | -------------------------- | ----------- |
 | 1. Project Foundation      | Complete    |
-| 2. Companies & Projects    | Not Started |
+| 2. Companies & Projects    | Complete    |
 | 3. Core Journal & Autosave | Not Started |
 | 4. History & Attachments   | Not Started |
 | 5. Data Management         | Not Started |
 | 6. Testing & Release       | Not Started |
 
-**Current Phase:** Phase 2 (not started)  
-**Current Task:** Next: 2.1 Database Schema (not started)  
-**Overall Status:** In Progress; Phase 1 complete
+**Current Phase:** Phase 2 complete (automated verification and user-confirmed physical-phone acceptance)
+
+**Current Task:** 2.5 Security & Verification complete; next: 3.1 Entry Data Model (not started)
+
+**Overall Status:** In Progress; Phases 1 and 2 complete; Phase 3 not started
 
 Update progress as development continues.
 
@@ -130,57 +132,65 @@ Implementation uses Convex Auth v2's Google component, a fixed HTTPS-to-native c
 
 ### 2.1 Database Schema
 
-- [ ] Define company and project tables.
-- [ ] Add ownership fields and appropriate indexes.
-- [ ] Define schema and argument validators.
-- [ ] Establish shared authorization helpers.
-- [ ] Implement relationship validation.
+- [x] Define company and project tables.
+- [x] Add ownership fields and appropriate indexes.
+- [x] Define schema and argument validators.
+- [x] Establish shared authorization helpers.
+- [x] Implement relationship validation.
 
 ### 2.2 Company Management
 
-- [ ] Create company query and mutation functions.
-- [ ] Implement Create Company form.
-- [ ] Implement company listing.
-- [ ] Implement company detail view.
-- [ ] Implement Edit Company.
-- [ ] Support job title and employment dates.
-- [ ] Validate required fields and date ranges.
-- [ ] Prevent deletion when related records exist.
-- [ ] Implement empty, loading, and error states.
+- [x] Create company query and mutation functions.
+- [x] Implement Create Company form.
+- [x] Implement company listing.
+- [x] Implement company detail view.
+- [x] Implement Edit Company.
+- [x] Support job title and employment dates.
+- [x] Validate required fields and date ranges.
+- [x] Prevent deletion when related records exist.
+- [x] Implement empty, loading, and error states.
+
+Implemented and deployed to the development backend. Deletion rejects named projects, including archived ones. Task 2.4 adds explicit empty-parent cleanup of the built-in category in the same transaction as company deletion. The entries table is not defined yet; extending the guard to all entries, including General / Adhoc work, drafts, and Trash, is required in task 3.1 before entry creation is enabled. Automated verification is complete; physical-phone layout, keyboard, and authenticated CRUD acceptance remain for the user to review.
 
 ### 2.3 Project Management
 
-- [ ] Create project query and mutation functions.
-- [ ] Implement Create Project form.
-- [ ] Implement projects under each company.
-- [ ] Implement project detail view.
-- [ ] Implement Edit Project.
-- [ ] Support Active and Archived statuses.
-- [ ] Prevent deleting projects containing entries.
-- [ ] Handle archived projects correctly.
+- [x] Create project query and mutation functions.
+- [x] Implement Create Project form.
+- [x] Implement projects under each company.
+- [x] Implement project detail view.
+- [x] Implement Edit Project.
+- [x] Support Active and Archived statuses.
+- [x] Prevent deleting projects containing entries.
+- [x] Handle archived projects correctly.
+
+Implemented and deployed to development. Company details contain paginated project browsing with All/Active/Archived filters. Projects can be created, viewed, edited, archived, and restored; their company is fixed parent context. Permanent project deletion is deliberately unavailable for all projects, so no project or future entry relationship can be deleted through this API. Before exposing deletion later, add checks for all entries, including drafts and Trash. Entry-backed preservation cannot be physically exercised before the entry schema exists. Task 2.4 General / Adhoc provisioning and physical-phone acceptance remain separate work.
 
 ### 2.4 General / Adhoc Work
 
-- [ ] Establish a built-in General / Adhoc category per company.
-- [ ] Prevent duplicate General / Adhoc categories.
-- [ ] Prevent accidental removal of the built-in category.
-- [ ] Make General / Adhoc selectable during entry creation.
+- [x] Establish a built-in General / Adhoc category per company.
+- [x] Prevent duplicate General / Adhoc categories.
+- [x] Prevent accidental removal of the built-in category.
+- [x] Make General / Adhoc selectable during entry creation.
+
+Implemented and deployed; existing development companies are backfilled and audited. New companies provision General / Adhoc atomically. The owned, canonical category is reused on retries, cannot be edited/archived/deleted independently, and is pinned in company All/Active views. Confirmed deletion of an otherwise empty company removes its built-in category with the parent; future entry guards must protect all saved work before Phase 3 writes are enabled. Add Entry includes company/category selection with General as the default actual ID; the full guided form, drafts, and entry persistence remain Phase 3. Task 2.5 and physical-phone acceptance are not claimed complete.
 
 ### 2.5 Security & Verification
 
-- [ ] Test company ownership checks.
-- [ ] Test project ownership checks.
-- [ ] Prevent cross-user record access.
-- [ ] Validate company/project relationships.
-- [ ] Verify CRUD and archive workflows.
+- [x] Test company ownership checks.
+- [x] Test project ownership checks.
+- [x] Prevent cross-user record access.
+- [x] Validate company/project relationships.
+- [x] Verify CRUD and archive workflows.
 
 **Phase 2 Completion Criteria**
 
-- [ ] Users can manage multiple companies.
-- [ ] Companies can contain multiple projects.
-- [ ] General / Adhoc is available for each company.
-- [ ] Archived projects preserve their records.
-- [ ] Users cannot access other users' records.
+- [x] Users can manage multiple companies.
+- [x] Companies can contain multiple projects.
+- [x] General / Adhoc is available for each company.
+- [x] Archived projects preserve their records.
+- [x] Users cannot access other users' records.
+
+Verified through automated backend/navigation tests and user-confirmed physical-phone acceptance on 2026-11-25. Archive preservation currently covers project records and relationships, since saved entries arrive in Phase 3.
 
 **Deliverable:** Functional company and project organization.
 
@@ -200,6 +210,8 @@ Implementation uses Convex Auth v2's Google component, a fixed HTTPS-to-native c
 - [ ] Define Pending, Known, and Not Measurable impact statuses.
 - [ ] Add optional impact metrics.
 - [ ] Add entry ownership and relationship validation.
+- [ ] Extend company deletion guards to all entries, including General / Adhoc work, drafts, and Trash, before enabling entry creation.
+- [ ] Require entry dependency checks, including drafts and Trash, before exposing any permanent project deletion.
 - [ ] Establish entry indexes.
 - [ ] Add revision tracking for concurrency protection.
 
@@ -535,6 +547,94 @@ Add new blockers only when they affect implementation.
 ## 4. Progress Log
 
 Update after completing meaningful tasks or milestones.
+
+### 2026-11-25 — Phase 2 physical-phone acceptance
+
+**User-confirmed:** The user confirmed that all eight manual checklist areas passed on their phone: multiple-company CRUD and date validation; cancelled/confirmed empty-company deletion and named/archived-project deletion protection; project creation/editing with fixed company relationships; archive cancellation, filtering, and restoration; one read-only General / Adhoc per company and correct Add Entry company/category selection; signed-out route protection and isolation between two Google accounts; offline feedback and retry without duplicate records; and approved design composition, themes, keyboard/Save reachability, calendars, circular company actions, enlarged text, and reduced motion.
+
+**Evidence:** This is the user's device acceptance report, distinct from agent-run automated checks. No screenshots or independent agent device inspection were collected. Earlier pending phone notes below describe the state at each implementation milestone and are superseded by this acceptance for Phase 2 behavior. Journal saving, entry-backed archive preservation, drafts, and Trash remain outside Phase 2.
+
+**Next:** Commit and push the completed Phase 2 work, then task 3.1 — Entry Data Model.
+
+### 2026-11-25 — Phase 2.5 security and verification
+
+**Reviewed:** Company/project public validators and ownership enforcement, parent relationships, authenticated session resolution, indexed lists, General provisioning, deletion guards, and archive/restore. No production security correction was needed. No UI, theme, or token changes were made; the existing approved design references remain in force.
+
+**Completed:** Added `convex-test` as a development dependency under the existing Jest Expo runner. Seventeen registered-function tests exercise real argument/schema validation, indexes, transactions, and the installed Auth component's actual session lookup. Test-only fixture mutations seed/revoke sessions exclusively in memory; they are not deployed or included in the application. The suite covers anonymous and cross-user access, forged user IDs used as session subjects, session revocation, protected-field overposting, malformed/wrong-table IDs, owner/company/status pagination, normalized CRUD and invalid writes, archive/restore identity preservation, archived-child deletion guards, General retry/read-only/parent cleanup, broken/foreign parents, foreign-owned child corruption, and company/General transaction rollback after an injected failure.
+
+**Verification:** `npm run check`, all 185 tests in 20 suites, Android production bundle export, and `npm run convex:check` passed. The live probe checks connectivity and anonymous user/company rejection; two-user authorization and session-revocation evidence comes from the in-memory runtime rather than live Google sign-ins. JWT signature verification, deployed transaction concurrency, and phone acceptance are not established by that runtime. Existing development backfill/audit results are recorded under task 2.4; no private live records were modified for this task.
+
+**Phone review:** Subsequently confirmed passed by the user on 2026-11-25; see the Phase 2 physical-phone acceptance entry above. No emulator, Android launch, or manual preview server was started by the agent.
+
+**Next:** Task 3.1 — Entry Data Model (not started). Before enabling any entry writes, company deletion must check all saved entries, including General / Adhoc, drafts, and Trash. Any future permanent project deletion also requires an entry dependency guard. Entry-backed archive preservation remains a Phase 3 check.
+
+### 2026-11-25 — Phase 2.4 General / Adhoc work
+
+**Reviewed:** Organization and empty-company/project references plus the company/category fields in the first-use sheet. Existing themes/tokens and the current task boundary remain authoritative.
+
+**Completed:** Added one transactional General / Adhoc provisioning helper, atomic company/category creation, authenticated idempotent setup and lookup, reserved-name validation, and bounded admin-only backfill/audit functions. Preserved existing IDs during canonical built-in repair and ordinary legacy records during migration. Existing built-in edit/archive restrictions and the absence of standalone project deletion protect the category. Empty-company deletion now checks named projects and removes only its owned built-in category with the parent. Company details pin General independently of named-project pagination and show the no-named-projects state. Add Entry now provides real company/category selection, defaults to that company's General ID, clears stale relationships on company switches, and excludes archived named projects. Choice sheets honor reduced motion; preview accesses no private data. Entry fields and saving remain explicitly unavailable rather than simulated.
+
+**Verification:** Convex code generation, `npm run check`, all 168 tests in 19 suites, and Android production bundle export passed. Tests cover per-company idempotency, ownership, canonical repair, reserved names, duplicate failure, restartable/paginated migration, empty-parent cleanup, named-project deletion guards, built-in read-only routes, category selection/reselection, company switching, stale archived/deleted choices, offline/setup retries, late failures, preview isolation, and real router selection flows. Development deployment succeeded. Two concurrent real backfill calls each processed the existing company; a full audit checked one company and found zero missing, duplicate, or invalid built-in categories. Only counts were logged; no company/journal content was printed. Theme/token files are unchanged.
+
+**Phone review:** Not performed by the agent. Use `npm run start:dev` in the installed calendar-enabled development build. Verify General appears once in an existing and a newly created company, remains read-only, and is selected by default after choosing a company in Add Entry. Switch to another company, choose a named project and General again, and inspect enlarged text, themes, and reduced-motion sheets. Confirm that selection is temporary and that journal saving is not offered yet. Task 2.4 adds no native dependency, so no additional install is needed if the earlier calendar build is installed. No emulator, Android launch, or manual preview server was started.
+
+**Scope:** Stopped at 2.4. Task 2.5 remains not started. The Phase 3 company deletion guard must include entries associated with General / Adhoc before any entry writes are enabled. Full entry creation, autosave, and actual saved-entry acceptance remain Phase 3.
+
+**Next:** Task 2.5 — Security & Verification.
+
+### 2026-11-25 — Phase 2.3 project management
+
+**Reviewed:** Organization, empty/edit-project, and archive-confirmation references in `docs/designs/supporting-screens/`, following the main flow and existing themes/tokens.
+
+**Completed:** Added owner- and company-scoped paginated project queries, private project/company detail, and authorized create/update/status mutations. New projects are Active and server-owned with `isGeneral: false`; names/descriptions are trimmed and validated independently on both client and server. Editing replaces editable fields and clears blank descriptions while preserving parent company, ownership, creation metadata, and built-in flags. Added project browsing beneath company details, status filters, protected add/detail/edit routes, full-screen forms, explicit status editing, and reduced-motion-aware archive/restore confirmation sheets with retry/loading/offline feedback. Archive/restore changes only status/timestamps; all project deletion stays unavailable. Reused the company frame, feedback, error boundary, and request-error handler as shared UI primitives without altering company title-row actions or theme tokens.
+
+**Verification:** Convex code generation, local route generation without a preview server, `npm run check`, all 144 tests across 18 suites, and Android production bundle export passed. New coverage includes project authorization across every endpoint, foreign/missing parent relationships, owner/company/status filtering before pagination, validation, metadata protection, optional-description clearing, idempotent archiving, archive/restore preservation, built-in flags, UI empty/loading/error/retry/offline states, duplicate saves, preview isolation, protected project deep links, and a real-router company → add project → detail → edit → archive → filtered list → restore flow. `npm run convex:push` deployed the implementation; the existing live health/anonymous user-company authorization smoke check passed. Project-specific authorization is covered by automated handler tests, not claimed as physical cross-account acceptance.
+
+**Phone review:** Not performed by the agent. Use `npm run start:dev` with the installed Joti development build. From Companies, open a company, add/edit a project, archive it, find it via the Archived filter, and restore it. Review keyboard/scroll behavior, large text, themes, and reduced-motion confirmation sheets. Task 2.3 adds no native dependencies, so no additional rebuild is needed if the earlier calendar-enabled development build is already installed. Expo Go cannot exercise authenticated project workflows. No emulator, Android launch, or manual preview server was started.
+
+**Scope:** Stopped at 2.3. Company reassignment and permanent project deletion are unavailable. No General / Adhoc provisioning, entries, fake entry counts, or entry-backed archive acceptance was introduced. Task 2.4 remains not started.
+
+**Next:** Task 2.4 — General / Adhoc Work.
+
+### 2026-11-25 — Company title-row actions
+
+**Completed:** Applied the user's refinement to place Edit and Delete at the right of the company-name title row as circular Pencil/Trash icon buttons. Reused the shared Button with an icon-only mode, 48-point targets, accessible labels, and existing theme tokens. Preserved edit navigation, deletion confirmation, loading feedback, and disabled states. Recorded this refinement in `docs/DESIGN_SYSTEM.md`.
+
+**Verification:** Static checks passed; all 20 affected company UI, navigation, and shared design-system tests passed. Theme/token files are unchanged. No new native dependency or device reinstall is required for this refinement; the earlier calendar dependency still requires its documented rebuild if not yet installed. Narrow-screen and enlarged-text visual acceptance remains a phone check.
+
+### 2026-11-25 — Phase 2.2 design-reference alignment
+
+**Reviewed:** The main screen flow, current populated/first-use sheets, supporting screen index, organization sheet, and empty-company reference under `docs/designs/`. These guide composition and interaction; existing app themes and tokens remain authoritative.
+
+**Completed:** Replaced the company placeholder hero/card composition with compact title rows, plain divided company rows with initials and chevrons, a focused Organize-mascot empty state with one Add Company action, and a compact company profile. Create/edit forms now use an open layout, native Android calendar controls with readable dates and Clear actions, and a full-width bottom Save action. Back retains the existing unsaved-change warning. Removed competing Add Entry actions from Companies and Settings, and kept tabs out of company forms. Dates still persist as date-only strings; project/entry sections and counts remain deferred until those features exist. Added permanent every-session reference-reading and pre-UI image-review instructions to `AGENTS.md`, including the requirement to preserve themes/tokens.
+
+**Verification:** `npm run check` passed; all 111 tests in 16 suites passed; Android production bundle export passed. Tests cover calendar selection/cancellation/clearing/failure and disabled controls, local date round-trips, employment summaries, company UI flows, guarded routes, save/discard navigation, and tab action placement. Verified no diff in `constants/design-tokens.js`, `tailwind.config.js`, or `lib/theme.tsx`. No manual preview server, emulator, Android launch, or physical-phone acceptance was performed.
+
+**Phone review required:** The Expo-compatible calendar picker is a new native dependency. Rebuild/install on a connected physical phone with `npm run build:android -- --device`, even if an older Joti development build is installed; later sessions use `npm run start:dev`. Check compact headers, populated/empty Companies, form scrolling and keyboard behavior, calendar selection/cancellation/clearing, full-width Save, light/dark themes, enlarged text, and reduced motion. Expo Go supports only unauthenticated preview, not Google sign-in or real company CRUD. Native compilation and the dialog's on-device appearance remain unverified.
+
+**Scope:** Corrected task 2.2 UI and session instructions only. Task 2.3 remains not started; the previously deployed company backend is unchanged.
+
+### 2026-11-25 — Phase 2.2 company management
+
+**Completed:** Added authenticated, owner-filtered company queries and mutations; reactive pagination; protected create/detail/edit routes; optional job titles and date-only employment values; shared React Hook Form/Zod validation on the client and independent backend enforcement. Added trimmed names, 200-character name/title limits, real-calendar and employment-range checks, clearing optional values on full-form updates, server-owned metadata, transactional project deletion guards, destructive confirmation, unsaved-change warnings, duplicate-submit protection, offline feedback, and error/retry states. Reused semantic theme tokens and brief reduced-motion-aware feedback. Design preview grants no company access. Added the required form dependencies with npm and regenerated API/route types without starting a preview server.
+
+**Verification:** `npm run check` passed; all 103 tests across 14 suites passed; Android production bundle export passed. Coverage includes company CRUD handlers, owner-filtered pagination, signed-out/cross-user access, related project deletion guards (active/archived/built-in), optional-field clearing after Convex serialization, date edge cases, UI loading/empty/error/retry/offline states, duplicate saves, preview isolation, guarded deep links, and actual router create/edit/discard transitions. `npm run convex:push` deployed the implementation to the development backend; the extended live `npm run convex:check` passed and verified anonymous company reads and creation are denied without creating test records.
+
+**Phone review:** Not performed by the agent. Run `npm run start:dev` and open the installed Joti development build to review create/detail/edit/delete, field validation, keyboard behavior, enlarged text, themes, and reduced motion. Expo Go is an unauthenticated design preview and cannot exercise real company CRUD. See `docs/CONVEX_SETUP.md` for the physical-phone build command if needed.
+
+**Scope:** Stopped at 2.2. Project CRUD/browsing, automatic General / Adhoc creation, and entry schemas remain later tasks. Entry dependency checks must be added in 3.1 before enabling entries; the checklist records this prerequisite.
+
+**Next:** Task 2.3 — Project Management (not started).
+
+### 2026-11-25 — Phase 2.1 database schema
+
+**Completed:** Added company/project tables with ownership, optional employment details, project status, the built-in category flag, timestamps, and indexes for owner/company/status/category lookups. Added reusable schema and client-argument validators that exclude server-controlled fields. Reused live-session authorization through company/project helpers, including parent-company ownership and company/project pairing checks. Regenerated Convex types and documented the backend contracts.
+
+**Verification:** Convex code generation and backend typechecking passed. `npm run check` passed (frontend/backend TypeScript, ESLint, Prettier). All 62 tests across 10 suites passed, including eight new authorization/relationship cases covering signed-out access, missing/foreign records and parent companies, cross-user project access, mismatched owned pairs, and archived historical relationships. No phone checks, emulator, or Metro session were needed for this backend-only task.
+
+**Scope:** Stopped at 2.1. CRUD endpoints, forms, semantic name/date validation, automatic General / Adhoc creation and uniqueness, and later-phase journal tables remain unimplemented. On the user's request, `npm run convex:push` successfully deployed the schema to the configured development backend on 2026-11-25.
+
+**Next:** Task 2.2 — Company Management (not started).
 
 ### 2026-11-24 — Phase 1.3 design system
 

@@ -16,8 +16,10 @@ type ButtonProps = Omit<PressableProps, 'children'> & {
   title: string;
   variant?: keyof typeof variants;
   loading?: boolean;
-  icon?: AnimatedIconName;
-};
+} & (
+    | { iconOnly: true; icon: AnimatedIconName }
+    | { iconOnly?: false; icon?: AnimatedIconName }
+  );
 
 export function Button({
   title,
@@ -25,6 +27,7 @@ export function Button({
   loading = false,
   disabled,
   icon,
+  iconOnly = false,
   className = '',
   ...props
 }: ButtonProps) {
@@ -41,7 +44,7 @@ export function Button({
         busy: loading,
       }}
       disabled={blocked}
-      className={`control-base ${variants[variant].control} gap-2 focus:border-focus ${blocked ? 'opacity-50' : ''} ${className}`}
+      className={`control-base ${variants[variant].control} ${iconOnly ? 'h-12 w-12 px-0 py-0' : 'gap-2'} focus:border-focus ${blocked ? 'opacity-50' : ''} ${className}`}
     >
       {({ pressed }) => (
         <>
@@ -63,12 +66,14 @@ export function Button({
               active={!blocked && pressed}
             />
           ) : null}
-          <Typography
-            variant="label"
-            className={`shrink ${variants[variant].label}`}
-          >
-            {title}
-          </Typography>
+          {!iconOnly && (
+            <Typography
+              variant="label"
+              className={`shrink ${variants[variant].label}`}
+            >
+              {title}
+            </Typography>
+          )}
         </>
       )}
     </Pressable>

@@ -4,7 +4,9 @@
     "slug": "joti",
     "version": "0.1.0",
     "scheme": "joti",
-    "android": { "package": "com.lopezjhonlay.joti" },
+    "android": {
+      "package": "com.lopezjhonlay.joti"
+    },
     "orientation": "portrait",
     "platforms": ["android"],
     "userInterfaceStyle": "automatic",
@@ -14,7 +16,8 @@
       "expo-asset",
       "expo-secure-store",
       "expo-web-browser",
-      "./plugins/with-windows-native-paths"
+      "./plugins/with-windows-native-paths",
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true

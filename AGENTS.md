@@ -4,6 +4,16 @@
 
 Joti is an Android-first private work journal using Expo, TypeScript, NativeWind, and Convex. Read `docs/PRD.md` (scope), `docs/CODING_GUIDELINES.md` (standards), `docs/DESIGN_SYSTEM.md` (visual conventions), and `docs/TASKS.md` (progress) before implementing changes.
 
+## Design References — Every Session
+
+At the start of every session, read `docs/designs/main-screens/wireframe-plan.md` and `docs/designs/supporting-screens/README.md`. Before UI work, visually inspect the relevant reference images. Start with `docs/designs/main-screens/main-screens-sheet-v5.png` for populated tabs and `first-use-flow-sheet-v2.png` for first use and company creation. Company detail/edit references are in `docs/designs/supporting-screens/organization-sheet-v1.png`; the company empty state is in `empty-and-project-sheet-v1.png`. Use the supporting-screen README to find the appropriate sheets for other features. Prefer these linked versions over older iterations unless the user selects another reference.
+
+Use these references for screen composition, hierarchy, content density, navigation, and interaction. Preserve the existing light/dark themes and `constants/design-tokens.js`, `tailwind.config.js`, and `lib/theme.tsx`; do not copy colors or invent new tokens from mockup pixels unless the user explicitly requests a theme/token change. Compose semantic utilities and shared components with the existing tokens. The references refine `docs/DESIGN_SYSTEM.md` at the screen level; the PRD and current task boundary still determine which features are implemented.
+
+Follow the compact title rows, plain divided lists, restrained section spacing, and open full-screen forms shown in the references. Companies has Add Company as its local primary action and no competing Add Entry action; Settings has no creation action. Keep tabs off full-screen forms, use calendar controls for dates, and place the form's primary Save action at the bottom while keeping it reachable when scrolling or the keyboard is open. Do not substitute placeholder heroes or dense card stacks. Use only real data for implemented sections; defer later-phase project/entry sections instead of inventing counts or enabling unfinished actions. Review changes against the relevant sheets and record remaining physical-phone checks in `docs/TASKS.md`.
+
+## Module Layout
+
 Follow this structure:
 
 - `app/`: Expo Router routes, authentication groups, and screen composition.

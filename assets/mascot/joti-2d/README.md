@@ -32,4 +32,4 @@ Read the figures from left to right, top to bottom:
 
 Use the mascot selectively, with accessible accompanying copy. A success pose must reflect a confirmed successful operation. Future animation must follow the app-wide reduced-motion and performance guidance in `docs/DESIGN_SYSTEM.md`.
 
-All figures were checked for grid-cell clearance, transparent padding, and lossless pixel preservation. The images have not been integrated into screens; verify their size and contrast in context when adding them to the app.
+All figures were checked for grid-cell clearance, transparent padding, and lossless pixel preservation. The Organize pose is now used in the company empty state, following `docs/designs/supporting-screens/empty-and-project-sheet-v1.png`; its size and contrast still require physical-phone review. Other poses remain unintegrated.

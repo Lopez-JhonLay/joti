@@ -20,6 +20,13 @@ jest.mock('react-native-reanimated', () =>
   require('react-native-reanimated/mock'),
 );
 
+jest.mock('@react-native-community/datetimepicker', () => ({
+  DateTimePickerAndroid: {
+    open: jest.fn(),
+    dismiss: jest.fn(async () => false),
+  },
+}));
+
 // NativeWind deliberately skips automatic core-component registration in Jest.
 require('react-native-css-interop/dist/runtime/components');
 

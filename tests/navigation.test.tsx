@@ -17,6 +17,12 @@ import HistoryScreen from '@/app/(protected)/(tabs)/history';
 import CompaniesScreen from '@/app/(protected)/(tabs)/companies';
 import SettingsScreen from '@/app/(protected)/(tabs)/settings';
 import AddEntryScreen from '@/app/(protected)/add-entry';
+import NewCompanyRoute from '@/app/(protected)/company/new';
+import CompanyDetailRoute from '@/app/(protected)/company/[companyId]/index';
+import EditCompanyRoute from '@/app/(protected)/company/[companyId]/edit';
+import NewProjectRoute from '@/app/(protected)/company/[companyId]/project/new';
+import ProjectDetailRoute from '@/app/(protected)/project/[projectId]/index';
+import EditProjectRoute from '@/app/(protected)/project/[projectId]/edit';
 import { layout } from '@/constants/design-tokens';
 
 const routes = {
@@ -30,11 +36,29 @@ const routes = {
   '(protected)/(tabs)/companies': CompaniesScreen,
   '(protected)/(tabs)/settings': SettingsScreen,
   '(protected)/add-entry': AddEntryScreen,
+  '(protected)/company/new': NewCompanyRoute,
+  '(protected)/company/[companyId]/index': CompanyDetailRoute,
+  '(protected)/company/[companyId]/edit': EditCompanyRoute,
+  '(protected)/company/[companyId]/project/new': NewProjectRoute,
+  '(protected)/project/[projectId]/index': ProjectDetailRoute,
+  '(protected)/project/[projectId]/edit': EditProjectRoute,
 };
 
 afterEach(() => jest.restoreAllMocks());
 
-it.each(['/', '/history', '/companies', '/settings', '/add-entry'])(
+it.each([
+  '/',
+  '/history',
+  '/companies',
+  '/settings',
+  '/add-entry',
+  '/company/new',
+  '/company/example',
+  '/company/example/edit',
+  '/company/example/project/new',
+  '/project/example',
+  '/project/example/edit',
+])(
   'redirects a protected deep link (%s) to the auth placeholder',
   async (initialUrl) => {
     await renderRouter(routes, { initialUrl });
@@ -80,6 +104,9 @@ it('navigates the preview tabs, opens and closes Add Entry, then revokes access'
       screen.getByRole('button', { name: new RegExp(`^${name}, tab`) }),
     );
     expect(screen.getByRole('header', { name })).toBeVisible();
+    if (name === 'Companies' || name === 'Settings') {
+      expect(screen.queryByRole('button', { name: 'Add Entry' })).toBeNull();
+    }
     await waitFor(() =>
       expect(iconTiming).toHaveBeenCalledWith(
         expect.anything(),

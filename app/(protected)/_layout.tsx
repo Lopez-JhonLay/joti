@@ -8,7 +8,11 @@ export default function ProtectedLayout() {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen
         name="add-entry"
-        options={{ title: 'Add Entry', presentation: 'modal' }}
+        options={{
+          title: 'Add Entry',
+          presentation: 'modal',
+          headerShown: false,
+        }}
       />
     </Stack>
   );

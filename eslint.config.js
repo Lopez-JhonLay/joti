@@ -3,7 +3,15 @@ const expoConfig = require('eslint-config-expo/flat');
 
 module.exports = defineConfig([
   expoConfig,
-  { ignores: ['dist/**', 'coverage/**', 'convex/_generated/**', '.cxx/**'] },
+  {
+    ignores: [
+      'dist/**',
+      'coverage/**',
+      'convex/_generated/**',
+      '.expo/**',
+      '.cxx/**',
+    ],
+  },
   {
     files: ['tests/**/*.js'],
     languageOptions: {

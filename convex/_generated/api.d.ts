@@ -9,10 +9,16 @@
  */
 
 import type * as auth from "../auth.js";
+import type * as companies from "../companies.js";
+import type * as general_projects from "../general_projects.js";
 import type * as health from "../health.js";
 import type * as http from "../http.js";
 import type * as lib_auth from "../lib/auth.js";
+import type * as lib_general_projects from "../lib/general_projects.js";
 import type * as lib_mobile_auth from "../lib/mobile_auth.js";
+import type * as lib_organization from "../lib/organization.js";
+import type * as lib_organization_validators from "../lib/organization_validators.js";
+import type * as projects from "../projects.js";
 import type * as users from "../users.js";
 
 import type {
@@ -23,10 +29,16 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  companies: typeof companies;
+  general_projects: typeof general_projects;
   health: typeof health;
   http: typeof http;
   "lib/auth": typeof lib_auth;
+  "lib/general_projects": typeof lib_general_projects;
   "lib/mobile_auth": typeof lib_mobile_auth;
+  "lib/organization": typeof lib_organization;
+  "lib/organization_validators": typeof lib_organization_validators;
+  projects: typeof projects;
   users: typeof users;
 }>;
 

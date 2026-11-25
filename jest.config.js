@@ -5,7 +5,7 @@ module.exports = {
   testMatch: ['**/tests/**/*.test.ts?(x)'],
   setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
   transformIgnorePatterns: expoPreset.transformIgnorePatterns.map((pattern) =>
-    pattern.replace('(.pnpm|', '(@convex-dev/auth|.pnpm|'),
+    pattern.replace('(.pnpm|', '(convex-test|@convex-dev/auth|.pnpm|'),
   ),
   moduleNameMapper: {
     '\\.css$': '<rootDir>/tests/style-mock.js',

@@ -20,6 +20,10 @@ import AddEntryScreen from '@/app/(protected)/add-entry';
 import type { useAuthSession } from '@/lib/auth-session';
 
 const mockListeners = new Set<() => void>();
+// Route-guard tests do not connect to the organization data layer.
+jest.mock('@/components/journal/entry-organization-selector', () => ({
+  EntryOrganizationSelector: () => null,
+}));
 const initialAuth: ReturnType<typeof useAuthSession> = {
   isAuthenticated: false,
   isLoading: false,

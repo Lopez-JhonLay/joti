@@ -28,7 +28,10 @@ export default function TabsLayout() {
       tabBar={(props) => <PillTabBar {...props} />}
       screenOptions={({ route }) => ({
         ...navigationStyles,
-        headerRight: () => <AddEntryButton />,
+        headerRight:
+          route.name === 'index' || route.name === 'history'
+            ? () => <AddEntryButton />
+            : undefined,
         tabBarIcon: ({ color, size }) => (
           <PillTabIcon
             routeName={route.name}
@@ -66,7 +69,10 @@ export default function TabsLayout() {
     >
       <Tabs.Screen name="index" options={{ title: 'Home' }} />
       <Tabs.Screen name="history" options={{ title: 'History' }} />
-      <Tabs.Screen name="companies" options={{ title: 'Companies' }} />
+      <Tabs.Screen
+        name="companies"
+        options={{ title: 'Companies', headerShown: false }}
+      />
       <Tabs.Screen name="settings" options={{ title: 'Settings' }} />
     </Tabs>
   );

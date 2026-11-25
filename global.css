@@ -53,6 +53,10 @@
     @apply font-medium text-body text-link underline;
   }
 
+  .form-input {
+    @apply min-h-touch rounded-card border bg-surface px-4 py-3 font-sans text-body text-foreground focus:border-focus;
+  }
+
   .divider {
     @apply border-b border-border;
   }

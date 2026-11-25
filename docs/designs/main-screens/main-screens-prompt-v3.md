@@ -1,0 +1,35 @@
+# Joti Main Screens — Revision 3
+
+Built-in image generation edit, 2026-11-24. Input: `main-screens-sheet-v2.png`. Output: `main-screens-sheet-v3.png`.
+
+Design proposal only. Shared title/action headers, aligned content margins, consistent list hierarchy, and a contained draft mascot. Existing app code is unchanged. Earlier proposals are preserved.
+
+## Prompt
+
++Refine this existing Joti mobile UI mockup sheet into revision 3, focusing exclusively on intentional placement, consistent layout and natural concise copy. Deliver exactly ONE 2x2 contact sheet: Home upper left, History upper right, Companies lower left, Settings lower right. Same equal phone dimensions, complete uncropped phones, plain board captions, pale blue-gray board. High resolution crisp readable UI.
+
+Preserve Joti light theme: #F6F8FC backgrounds, #FFFFFF surfaces, #EDF2FA elevated panels, #172033 foreground, #526078 secondary, #CBD5E5 thin borders, #245BD6 blue. Inter font family and existing scale, 4/8/16/24 spacing rhythm, 20px page margins, compact pill buttons, Lucide outline icons. Do not invent features or change navigation. Preserve ALL actions in reference: add entry, add company, search, filters, view all, open entries, company details, profile, theme, CSV export, Trash, sign out. No marketing copy, analytics, decorative badges.
+
+CRITICAL SHARED GEOMETRY:
+All four phones use EXACT same top app-bar height and baseline, SAME 24px semibold page-title size, SAME left x position 20px inside each phone. Titles Home, History, Companies, Settings must be identically aligned relative to their own phone. Header starts below the same 24px statusbar inset and has height 56px. Home/History/Companies have the SAME compact '+ Add entry' pill right-aligned on this header row. Settings has no unrelated action; title at identical location. Remove the separate blue joti masthead and greeting from Home to eliminate duplicate header levels. No oversized headings.
+All content begins 24px after header, same side margins. Use real 16px gaps within sections, 24px between sections. All text rows and all separator endpoints align to a consistent shared content grid. No hanging mascot across rows or section titles. Trailing chevrons all at common right edge. Dividers BETWEEN rows only, never ornamental rules above headings. All screen navigation capsules exactly same width, height, bottom offset, icon slots and selected shape. Four tabs Home, History, Companies, Settings, correct active tab each. Visible outer margins, no rectangular background container.
+Use the available space honestly: top-align content and leave calm unused space on shorter screens rather than vertically stretching sparse settings or company data. Do not add fictitious sections to fill. Consistency is in the grid and component rhythm, not making all four screens identical.
+
+HOME:
+Header 'Home' with '+ Add entry' pill, aligned identically to History.
+Content begins with 'Drafts' section title, then 12px gap to one pale-blue elevated draft row of approx 88px height. Inside this row at left 'New starter guide', small 'Edited today', trailing chevron. The EXISTING small blue notebook mascot goes INSIDE this row, in a reserved 48px column at right BEFORE chevron; all mascot parts contained, no overlaps or cropped illustration, no additional document icon. Very faint dot pattern inside draft row only. Mascot identity stays blue notebook with cream pages, quiff, expressive face, pencil and checkmark. Remove all floating dots outside this row.
+24px below draft row, a single section header baseline 'Recent entries' left and 'View all' right. Then a clean list with three consistently sized approximately 88px rows. Title then secondary employer/project line then date. Titles: 'Fixed the checkout timeout', 'Walked Maya through the release', 'Wrote the client handoff notes'. Context Northstar Studio · Atlas or General / Adhoc; dates Today, Today, Yesterday. Each row has right chevron centered vertically. Thin dividers only between records. No rounded cards for recent entries, no title/dates touching lines.
+
+HISTORY:
+Same title and '+ Add entry' appbar. Content starts with 48px rounded 'Search entries' field full width. 12px below compact Company, Project, Date filter pills plus filter-icon button, equal height. 24px gap to 'Today' small section title.
+Same entry row typography and row inset as Home; title, employer/project metadata, trailing chevron. Two rows 'Fixed the checkout timeout' and 'Walked Maya through the release'. 24px gap to 'Yesterday' heading, followed by 'Wrote the client handoff notes' and 'New starter guide'. Only draft row gets small plain 'Draft' state. No completed/category badges. No duplicate dates below entries when already grouped by date. Separator alignment matches Home. No alternating cards and plain rows.
+
+COMPANIES:
+Same appbar 'Companies' and '+ Add entry'. Place the '+ Add company' pill LEFT-ALIGNED in the first content row at the exact vertical content start position used by search on History. This is a local action below the global header, not squeezed beside or competing on the same baseline. Then 24px gap to the company list.
+Two substantial but compact list rows with small 40px NS/HW initial emblem left, one text column starting 56px from list left, and trailing chevron right. Consistent text hierarchy name 18px semibold, role 14px, dates 12px muted, then one small metadata line. 'Northstar Studio' / 'Frontend Developer' / 'Jan 2025 – Present' / '3 projects · 18 entries'; 'Harbor Works' / 'Software Intern' / 'Jun 2024 – Dec 2024' / '2 projects · 6 entries'. All text in each row aligns to its name column. 16px vertical row padding, single separator between companies, no card outlines, no Current badge. Do not scatter counts into dashboard boxes. No explanatory sentence. No unnecessary blank spacer between button and list.
+
+SETTINGS:
+Same appbar and 'Settings' title. At normal content start, compact account row 64px: 40px JL avatar, 'Jhon Lay', 'Google account', right chevron. Align icon column and text start exactly like Companies row components.
+24px gap to 'Appearance' small section heading, 12px gap to SAME full-width pill System / Light / Dark segmented control with Light selected. 24px gap to two flat action rows of 56px each: existing download icon, 'Export CSV', chevron; existing trash icon, 'Trash', chevron. All icons aligned to avatar column, labels align to account name. Thin separator BETWEEN action rows. Under Trash, retention text 'Kept for 30 days' aligned to the Trash TEXT column and close to that row, rather than a loose full-width paragraph. 24px gap to left-aligned compact outlined 'Sign out' pill. No decorative divider under retention text, no footer slogan, no arbitrary large gaps.
+
+The outcome must be a visibly disciplined, professionally composed mobile app system, not a busy template. Preserve current functions and theme, refine placement and spacing with meticulous consistent alignment. Exact 2x2 sheet, four same-sized screens, all readable and complete.

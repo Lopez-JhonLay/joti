@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Joti main screen wireframes</title>
+    <style>
+      :root {
+        font-family: Inter, Arial, sans-serif;
+        color: #27354a;
+        background: #e9edf3;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 32px 20px 56px;
+      }
+      h1 {
+        max-width: 860px;
+        margin: 0 auto 8px;
+        font-size: 24px;
+      }
+      .intro {
+        max-width: 860px;
+        margin: 0 auto 28px;
+        color: #687589;
+        font-size: 14px;
+      }
+      .sheet {
+        display: grid;
+        grid-template-columns: repeat(2, 390px);
+        gap: 40px;
+        justify-content: center;
+      }
+      .caption {
+        margin: 0 0 10px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .phone {
+        position: relative;
+        width: 390px;
+        height: 790px;
+        padding: 0 20px 92px;
+        border: 1px solid #8794a6;
+        border-radius: 28px;
+        background: #f9fafb;
+        overflow: hidden;
+      }
+      .status {
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #8490a0;
+        font-size: 11px;
+      }
+      header {
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #dce2e9;
+      }
+      header strong {
+        font-size: 22px;
+      }
+      .pill,
+      .filter {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 0 15px;
+        border: 1px solid #a6b2c1;
+        border-radius: 999px;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .pill-quiet {
+        border-color: #cbd4df;
+        background: transparent;
+        color: #687589;
+        font-weight: 500;
+      }
+      .pill-primary {
+        border-color: #51647e;
+        background: #51647e;
+        color: #fff;
+      }
+      main {
+        padding-top: 24px;
+      }
+      section + section {
+        margin-top: 24px;
+      }
+      .section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .link {
+        color: #61718a;
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .draft {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 84px;
+        padding: 12px 14px;
+        border: 1px solid #d6dde6;
+        border-radius: 16px;
+        background: #eef1f5;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 76px;
+        padding: 12px 4px;
+        border-bottom: 1px solid #dce2e9;
+      }
+      .row:last-child {
+        border-bottom: 0;
+      }
+      .row.compact {
+        min-height: 58px;
+      }
+      .copy {
+        min-width: 0;
+        flex: 1;
+      }
+      .title {
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+      .meta {
+        margin-top: 5px;
+        color: #687589;
+        font-size: 12px;
+        line-height: 1.3;
+      }
+      .chevron {
+        color: #8190a3;
+        font-size: 19px;
+      }
+      .avatar {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        flex: none;
+        border: 1px solid #cbd4df;
+        border-radius: 12px;
+        background: #e5eaf1;
+        color: #55657b;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .mascot {
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        flex: none;
+        border: 1px dashed #b6c1cf;
+        border-radius: 10px;
+        color: #77869a;
+        font-size: 10px;
+        text-align: center;
+      }
+      .search {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        padding: 0 14px;
+        border: 1px solid #bcc7d3;
+        border-radius: 14px;
+        color: #8190a3;
+        font-size: 14px;
+      }
+      .filters {
+        display: flex;
+        gap: 7px;
+        margin-top: 12px;
+      }
+      .filter {
+        min-height: 34px;
+        padding: 0 11px;
+        font-weight: 500;
+      }
+      .group {
+        margin-top: 24px;
+      }
+      .group .section-head {
+        margin-bottom: 4px;
+      }
+      .local-action {
+        margin-bottom: 24px;
+      }
+      .company-row {
+        min-height: 104px;
+      }
+      .selector {
+        height: 46px;
+        padding: 4px;
+        display: flex;
+        gap: 4px;
+        border: 1px solid #bcc7d3;
+        border-radius: 999px;
+      }
+      .selector span {
+        flex: 1;
+        display: grid;
+        place-items: center;
+        border-radius: 999px;
+        color: #748197;
+        font-size: 13px;
+      }
+      .selector .selected {
+        background: #dce4ee;
+        color: #34475e;
+        font-weight: 600;
+      }
+      .note {
+        margin: 2px 0 0 56px;
+        color: #687589;
+        font-size: 12px;
+      }
+      .sign-out {
+        margin-top: 24px;
+      }
+      nav {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        height: 68px;
+        display: flex;
+        align-items: center;
+        padding: 5px;
+        border: 1px solid #aebac8;
+        border-radius: 999px;
+        background: #fff;
+      }
+      nav span {
+        flex: 1;
+        height: 56px;
+        display: grid;
+        place-items: center;
+        border-radius: 999px;
+        color: #6d7b8c;
+        font-size: 11px;
+      }
+      nav .active {
+        background: #e8edf4;
+        color: #34475e;
+        font-weight: 700;
+      }
+      @media (max-width: 840px) {
+        .sheet {
+          grid-template-columns: 390px;
+        }
+      }
+      @media (max-width: 430px) {
+        body {
+          padding-inline: 6px;
+        }
+        .sheet {
+          grid-template-columns: minmax(0, 390px);
+        }
+        .phone {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Joti / Main screens</h1>
+    <p class="intro">
+      Daily-use layout · first use begins with Add Company, then an entry can be
+      created from Home or History
+    </p>
+    <div class="sheet">
+      <div>
+        <p class="caption">Home</p>
+        <div class="phone">
+          <div class="status"><span>9:41</span><span>● ▰</span></div>
+          <header>
+            <strong>Home</strong><span class="pill">＋ Add entry</span>
+          </header>
+          <main>
+            <section>
+              <div class="section-head">Drafts</div>
+              <div class="draft">
+                <div class="copy">
+                  <div class="title">Draft title</div>
+                  <div class="meta">Edited today</div>
+                </div>
+                <div class="mascot">Mascot<br />slot</div>
+                <span class="chevron">›</span>
+              </div>
+            </section>
+            <section>
+              <div class="section-head">
+                <span>Recent entries</span><span class="link">View all</span>
+              </div>
+              <div class="row">
+                <div class="copy">
+                  <div class="title">Entry title</div>
+                  <div class="meta">Company · Project</div>
+                  <div class="meta">Today</div>
+                </div>
+                <span class="chevron">›</span>
+              </div>
+              <div class="row">
+                <div class="copy">
+                  <div class="title">Entry title</div>
+                  <div class="meta">Company · Project</div>
+                  <div class="meta">Yesterday</div>
+                </div>
+                <span class="chevron">›</span>
+              </div>
+              <div class="row">
+                <div class="copy">
+                  <div class="title">Entry title</div>
+                  <div class="meta">Company · Project</div>
+                  <div class="meta">Date</div>
+                </div>
+                <span class="chevron">›</span>
+              </div>
+            </section>
+            <section>
+              <div class="meta">37 entries · Northstar Studio / Atlas</div>
+            </section>
+          </main>
+          <nav>
+            <span class="active">⌂<br />Home</span><span>◷<br />History</span
+            ><span>▦<br />Companies</span><span>⚙<br />Settings</span>
+          </nav>
+        </div>
+      </div>
+      <div>
+        <p class="caption">History</p>
+        <div class="phone">
+          <div class="status"><span>9:41</span><span>● ▰</span></div>
+          <header>
+            <strong>History</strong><span class="pill">＋ Add entry</span>
+          </header>
+          <main>
+            <div class="search">⌕ &nbsp; Search entries</div>
+            <div class="filters">
+              <span class="filter">Company ▾</span
+              ><span class="filter">Project ▾</span
+              ><span class="filter">Date ▾</span><span class="filter">☷</span>
+            </div>
+            <div class="group">
+              <div class="section-head">Today</div>
+              <div class="row">
+                <div class="copy">
+                  <div class="title">Entry title</div>
+                  <div class="meta">Company · Project</div>
+                </div>
+                <span class="chevron">›</span>
+              </div>
+              <div class="row">
+                <div class="copy">
+                  <div class="title">Entry title</div>
+                  <div class="meta">Company · Project</div>
+                </div>
+                <span class="chevron">›</span>
+              </div>
+            </div>
+            <div class="group">
+              <div class="section-head">Yesterday</div>
+              <div class="row">
+                <div class="copy">
+                  <div class="title">Entry title</div>
+                  <div class="meta">Company · Project</div>
+                </div>
+                <span class="chevron">›</span>
+              </div>
+              <div class="row">
+                <div class="copy">
+                  <div class="title">Draft title</div>
+                  <div class="meta">Company · Project · Draft</div>
+                </div>
+                <span class="chevron">›</span>
+              </div>
+            </div>
+          </main>
+          <nav>
+            <span>⌂<br />Home</span><span class="active">◷<br />History</span
+            ><span>▦<br />Companies</span><span>⚙<br />Settings</span>
+          </nav>
+        </div>
+      </div>
+      <div>
+        <p class="caption">Companies</p>
+        <div class="phone">
+          <div class="status"><span>9:41</span><span>● ▰</span></div>
+          <header><strong>Companies</strong></header>
+          <main>
+            <div class="local-action">
+              <span class="pill pill-primary">＋ Add company</span>
+            </div>
+            <div class="row company-row">
+              <div class="avatar">NS</div>
+              <div class="copy">
+                <div class="title">Company name</div>
+                <div class="meta">Role</div>
+                <div class="meta">Start – Present</div>
+                <div class="meta">Projects · Entries</div>
+              </div>
+              <span class="chevron">›</span>
+            </div>
+            <div class="row company-row">
+              <div class="avatar">HW</div>
+              <div class="copy">
+                <div class="title">Company name</div>
+                <div class="meta">Role</div>
+                <div class="meta">Start – End</div>
+                <div class="meta">Projects · Entries</div>
+              </div>
+              <span class="chevron">›</span>
+            </div>
+          </main>
+          <nav>
+            <span>⌂<br />Home</span><span>◷<br />History</span
+            ><span class="active">▦<br />Companies</span
+            ><span>⚙<br />Settings</span>
+          </nav>
+        </div>
+      </div>
+      <div>
+        <p class="caption">Settings</p>
+        <div class="phone">
+          <div class="status"><span>9:41</span><span>● ▰</span></div>
+          <header><strong>Settings</strong></header>
+          <main>
+            <div class="row compact">
+              <div class="avatar">JL</div>
+              <div class="copy">
+                <div class="title">Account name</div>
+                <div class="meta">Google account</div>
+              </div>
+              <span class="chevron">›</span>
+            </div>
+            <section>
+              <div class="section-head">Appearance</div>
+              <div class="selector">
+                <span>System</span><span class="selected">Light</span
+                ><span>Dark</span>
+              </div>
+            </section>
+            <section>
+              <div class="row compact">
+                <div class="avatar">↓</div>
+                <div class="copy"><div class="title">Export CSV</div></div>
+                <span class="chevron">›</span>
+              </div>
+              <div class="row compact">
+                <div class="avatar">♧</div>
+                <div class="copy">
+                  <div class="title">Trash</div>
+                  <div class="meta">Kept for 30 days</div>
+                </div>
+                <span class="chevron">›</span>
+              </div>
+              <div class="sign-out"><span class="pill">Sign out</span></div>
+            </section>
+          </main>
+          <nav>
+            <span>⌂<br />Home</span><span>◷<br />History</span
+            ><span>▦<br />Companies</span
+            ><span class="active">⚙<br />Settings</span>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

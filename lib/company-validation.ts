@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-function isCalendarDate(value: string) {
+export function isCalendarDate(value: string) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value) || value.startsWith('0000'))
     return false;
   const parsed = new Date(`${value}T00:00:00.000Z`);

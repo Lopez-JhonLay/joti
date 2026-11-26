@@ -5,11 +5,16 @@ import { Typography } from '@/components/ui/typography';
 import { useTheme } from '@/lib/theme';
 import { AnimatedIcon } from '@/components/ui/animated-icon';
 import type { AnimatedIconName } from '@/components/ui/animated-icon';
+import { layout } from '@/constants/design-tokens';
 
 const variants = {
   primary: { control: 'control-primary', label: 'text-on-primary' },
   secondary: { control: 'control-secondary', label: 'text-foreground' },
   ghost: { control: 'control-ghost', label: 'text-link' },
+  'danger-soft': {
+    control: 'control-danger-soft',
+    label: 'text-danger',
+  },
 };
 
 type ButtonProps = Omit<PressableProps, 'children'> & {
@@ -29,6 +34,7 @@ export function Button({
   icon,
   iconOnly = false,
   className = '',
+  style,
   ...props
 }: ButtonProps) {
   const { colors } = useTheme();
@@ -44,6 +50,10 @@ export function Button({
         busy: loading,
       }}
       disabled={blocked}
+      style={(state) => [
+        { paddingHorizontal: iconOnly ? 0 : layout.spacing[4] },
+        typeof style === 'function' ? style(state) : style,
+      ]}
       className={`control-base ${variants[variant].control} ${iconOnly ? 'h-12 w-12 px-0 py-0' : 'gap-2'} focus:border-focus ${blocked ? 'opacity-50' : ''} ${className}`}
     >
       {({ pressed }) => (

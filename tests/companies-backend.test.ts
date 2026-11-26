@@ -84,11 +84,15 @@ const db = {
       },
     };
     const rows = () =>
-      (table === 'companies' ? [...companies.values()] : projects).filter(
-        (row) =>
-          Object.entries(filters).every(
-            ([field, value]) => Reflect.get(row, field) === value,
-          ),
+      (table === 'companies'
+        ? [...companies.values()]
+        : table === 'projects'
+          ? projects
+          : []
+      ).filter((row) =>
+        Object.entries(filters).every(
+          ([field, value]) => Reflect.get(row, field) === value,
+        ),
       );
     const reader = {
       withIndex: (_name: string, build: (q: typeof range) => unknown) => {

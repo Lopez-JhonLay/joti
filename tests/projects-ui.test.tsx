@@ -41,6 +41,8 @@ const mockCreate = jest.fn();
 const mockUpdate = jest.fn();
 const mockSetStatus = jest.fn();
 const mockLoadMore = jest.fn();
+let mockEntryResults: Doc<'entries'>[] = [];
+let mockEntryStatus: 'Exhausted' | 'CanLoadMore' = 'Exhausted';
 let mockPreview = false;
 let mockConnected = true;
 let mockCompany: Doc<'companies'> | null | undefined;
@@ -93,6 +95,8 @@ beforeEach(() => {
   mockCompany = company;
   mockDetail = { project, company };
   mockResults = [];
+  mockEntryResults = [];
+  mockEntryStatus = 'Exhausted';
   mockStatus = 'Exhausted';
   mockCreate.mockReset().mockResolvedValue(projectId);
   mockUpdate.mockReset().mockResolvedValue(null);
@@ -122,9 +126,13 @@ beforeEach(() => {
           }
         : mockDetail,
   );
-  jest.mocked(usePaginatedQuery).mockImplementation(() => ({
-    results: mockResults,
-    status: mockStatus as 'Exhausted',
+  jest.mocked(usePaginatedQuery).mockImplementation((ref) => ({
+    results:
+      getFunctionName(ref) === 'entries:list' ? mockEntryResults : mockResults,
+    status:
+      getFunctionName(ref) === 'entries:list'
+        ? mockEntryStatus
+        : (mockStatus as 'Exhausted'),
     isLoading: false,
     loadMore: mockLoadMore,
   }));
@@ -391,6 +399,55 @@ test('built-in flags prevent editing or archiving through the UI', async () => {
   expect(
     screen.getByText('The built-in category cannot be edited or archived.'),
   ).toBeTruthy();
+});
+
+test('Adhoc details show saved entries and route drafts back to the editor', async () => {
+  mockEntryStatus = 'CanLoadMore';
+  mockDetail = {
+    project: { ...project, name: 'General / Adhoc', isGeneral: true },
+    company,
+  };
+  const draft: Doc<'entries'> = {
+    _id: 'draft-entry' as Id<'entries'>,
+    _creationTime: 1,
+    userId: company.userId,
+    companyId,
+    projectId,
+    task: 'My Adhoc draft',
+    status: 'draft',
+    impactStatus: 'pending',
+    impactCategories: [],
+    revision: 1,
+    createdAt: 1,
+    updatedAt: 1,
+  };
+  mockEntryResults = [
+    draft,
+    {
+      ...draft,
+      _id: 'completed-entry' as Id<'entries'>,
+      task: 'My Adhoc work',
+      status: 'completed',
+    },
+  ];
+  await render(<ProjectScreen mode="detail" projectId={projectId} />, {
+    wrapper,
+  });
+  expect(usePaginatedQuery).toHaveBeenCalledWith(
+    expect.anything(),
+    { projectId, draftsOnly: false },
+    { initialNumItems: 5 },
+  );
+  await fireEvent.press(screen.getByRole('button', { name: 'Load More' }));
+  expect(mockLoadMore).toHaveBeenCalledWith(3);
+  await fireEvent.press(
+    screen.getByRole('button', { name: 'My Adhoc work, completed' }),
+  );
+  expect(router.push).toHaveBeenCalledWith('/entry/completed-entry');
+  await fireEvent.press(
+    screen.getByRole('button', { name: 'My Adhoc draft, draft' }),
+  );
+  expect(router.push).toHaveBeenCalledWith('/entry/draft-entry/edit');
 });
 
 test('query failures can be retried without exposing error details', async () => {

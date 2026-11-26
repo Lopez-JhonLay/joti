@@ -17,7 +17,7 @@ import { companyInitials, employmentDates } from '@/lib/company-presentation';
 import { layout } from '@/constants/design-tokens';
 import { AnimatedIcon } from '@/components/ui/animated-icon';
 import { Button } from '@/components/ui/button';
-import { Divider } from '@/components/ui/layout';
+import { Divider, ROW_INSET_STYLE } from '@/components/ui/layout';
 import { Typography } from '@/components/ui/typography';
 import { QueryBoundary } from '@/components/ui/query-boundary';
 import { Feedback } from '@/components/ui/feedback';
@@ -170,6 +170,7 @@ function CompanyList() {
             accessibilityRole="button"
             accessibilityLabel={`View ${company.name}`}
             accessibilityHint="Opens company details."
+            style={ROW_INSET_STYLE}
             onPress={() => router.push(companyLocation(company._id))}
             className="min-h-touch flex-row items-center gap-4 border-b border-border py-4 active:bg-elevated"
           >

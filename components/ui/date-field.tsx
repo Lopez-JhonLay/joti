@@ -4,6 +4,7 @@ import { Keyboard, Pressable, View } from 'react-native';
 import { AnimatedIcon } from './animated-icon';
 import { Button } from './button';
 import { Typography } from './typography';
+import { ROW_INSET_STYLE } from './layout';
 import {
   companyDateForPicker,
   companyDateFromPicker,
@@ -17,6 +18,7 @@ type DateFieldProps = {
   onBlur: () => void;
   disabled?: boolean;
   error?: string;
+  required?: boolean;
 };
 
 export function DateField({
@@ -26,6 +28,7 @@ export function DateField({
   onBlur,
   disabled,
   error,
+  required = false,
 }: DateFieldProps) {
   const [pickerError, setPickerError] = useState<string | null>(null);
   useEffect(
@@ -53,20 +56,26 @@ export function DateField({
     <View className="gap-2">
       <Typography variant="label">
         {label}{' '}
-        <Typography variant="label" className="font-sans text-muted">
-          (optional)
+        <Typography
+          variant="label"
+          className={required ? 'text-danger' : 'font-sans text-muted'}
+        >
+          {required ? '*' : '(optional)'}
         </Typography>
       </Typography>
-      <View className="flex-row items-center gap-2">
+      <View
+        className={`form-input flex-row items-center px-0 py-0 ${error ? 'border-danger' : 'border-border'} ${disabled ? 'opacity-50' : ''}`}
+      >
         <Pressable
           accessibilityRole="button"
+          style={ROW_INSET_STYLE}
           accessibilityLabel={label}
           accessibilityValue={{ text: displayValue }}
           accessibilityHint={error ?? 'Opens the calendar to select a date.'}
           accessibilityState={{ disabled: !!disabled }}
           disabled={disabled}
           onPress={openPicker}
-          className={`form-input flex-1 flex-row items-center justify-between gap-3 active:bg-elevated ${error ? 'border-danger' : 'border-border'} ${disabled ? 'opacity-50' : ''}`}
+          className="min-h-touch flex-1 flex-row items-center justify-between gap-3 rounded-card px-4 py-3 active:bg-elevated"
         >
           {({ pressed }) => (
             <>
@@ -75,17 +84,22 @@ export function DateField({
               >
                 {displayValue}
               </Typography>
-              <AnimatedIcon name="calendar" size={20} active={pressed} />
+              {!value && (
+                <AnimatedIcon name="calendar" size={20} active={pressed} />
+              )}
             </>
           )}
         </Pressable>
         {!!value && (
           <Button
-            title="Clear"
-            accessibilityLabel={`Clear ${label.toLowerCase()}`}
+            title={`Clear ${label.toLowerCase()}`}
+            icon="x"
+            iconOnly
             variant="ghost"
+            className="mr-1"
             disabled={disabled}
             onPress={() => {
+              setPickerError(null);
               onChange('');
               onBlur();
             }}

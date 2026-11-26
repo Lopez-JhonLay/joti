@@ -6,6 +6,7 @@ import * as authPublic from '../node_modules/@convex-dev/auth/dist/component/pub
 import schema from '../convex/schema';
 import * as companies from '../convex/companies';
 import * as projects from '../convex/projects';
+import * as entries from '../convex/entries';
 import * as generalProjects from '../convex/lib/general_projects';
 import type { Id } from '../convex/_generated/dataModel';
 
@@ -38,7 +39,7 @@ const app = defineTestApp({
         }),
     },
   },
-}).defineModules({ companies, projects });
+}).defineModules({ companies, projects, entries });
 
 async function setup() {
   const t = app.createTest();
@@ -75,6 +76,48 @@ async function setup() {
 }
 
 const paginationOpts = { numItems: 1, cursor: null };
+
+test('entry lifecycle uses real live sessions and loses access immediately after revocation', async () => {
+  const { t, owner, stranger, companyId, projectId, sessionId } = await setup();
+  const entry = await owner.mutation(app.api.entries.create, {
+    companyId,
+    projectId,
+    creationKey: 'session-entry-creation-0001',
+    impactCategories: [],
+    impactStatus: 'pending',
+  });
+  expect(
+    await stranger.query(app.api.entries.get, { entryId: entry._id }),
+  ).toBeNull();
+  await expect(
+    stranger.mutation(app.api.entries.update, {
+      entryId: entry._id,
+      companyId,
+      projectId,
+      expectedRevision: 1,
+      writeId: 'session-entry-update-0001',
+      impactCategories: [],
+      impactStatus: 'pending',
+    }),
+  ).rejects.toThrow('NOT_FOUND');
+  const completed = await owner.mutation(app.api.entries.complete, {
+    entryId: entry._id,
+    companyId,
+    projectId,
+    expectedRevision: 1,
+    writeId: 'session-entry-complete-0001',
+    date: '2026-11-25',
+    task: 'Release',
+    whatIDid: 'Shipped a fix',
+    impactCategories: ['technical'],
+    impactStatus: 'pending',
+  });
+  expect(completed.status).toBe('completed');
+  await t.mutation(auth.fixture.revokeSession, { sessionId });
+  await expect(
+    owner.query(app.api.entries.get, { entryId: entry._id }),
+  ).rejects.toThrow('UNAUTHENTICATED');
+});
 
 test('live session resolution rejects a user ID masquerading as a session and revoked sessions', async () => {
   const { t, owner, userId, sessionId } = await setup();

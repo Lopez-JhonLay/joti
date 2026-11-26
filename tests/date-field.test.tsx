@@ -45,6 +45,21 @@ test('the calendar starts on the saved date, preserves cancellation, and returns
     screen.getByRole('button', { name: 'Clear start date' }),
   );
   expect(onChange).toHaveBeenLastCalledWith('');
+  expect(DateTimePickerAndroid.open).toHaveBeenCalledTimes(1);
+  expect(screen.queryByText('Clear')).toBeNull();
+  await view.rerender(
+    <ThemeProvider>
+      <DateField
+        label="Start date"
+        value=""
+        onChange={onChange}
+        onBlur={onBlur}
+      />
+    </ThemeProvider>,
+  );
+  expect(screen.queryByRole('button', { name: 'Clear start date' })).toBeNull();
+  await fireEvent.press(screen.getByRole('button', { name: 'Start date' }));
+  expect(DateTimePickerAndroid.open).toHaveBeenCalledTimes(2);
   await view.unmount();
   expect(DateTimePickerAndroid.dismiss).toHaveBeenCalledWith('date');
 });

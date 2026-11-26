@@ -35,6 +35,13 @@ try {
     (error) =>
       error instanceof ConvexError && error.data?.code === 'UNAUTHENTICATED',
   );
+  await assert.rejects(
+    client.query(api.entries.list, {
+      paginationOpts: { numItems: 1, cursor: null },
+    }),
+    (error) =>
+      error instanceof ConvexError && error.data?.code === 'UNAUTHENTICATED',
+  );
   // An invalid name makes this probe non-writing even if authorization regresses.
   await assert.rejects(
     client.mutation(api.companies.create, { name: '' }),
@@ -42,7 +49,7 @@ try {
       error instanceof ConvexError && error.data?.code === 'UNAUTHENTICATED',
   );
   console.log(
-    'PASS: live app client connected; anonymous session is signed out; protected user/company reads and company creation denied.',
+    'PASS: live app client connected; anonymous session is signed out; protected user/company/entry reads and company creation denied.',
   );
 } finally {
   clearTimeout(timeout);

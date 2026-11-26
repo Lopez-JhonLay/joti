@@ -29,16 +29,16 @@ This document tracks the development of **Joti**, a private work journal for doc
 | -------------------------- | ----------- |
 | 1. Project Foundation      | Complete    |
 | 2. Companies & Projects    | Complete    |
-| 3. Core Journal & Autosave | Not Started |
+| 3. Core Journal & Autosave | Complete    |
 | 4. History & Attachments   | Not Started |
 | 5. Data Management         | Not Started |
 | 6. Testing & Release       | Not Started |
 
-**Current Phase:** Phase 2 complete (automated verification and user-confirmed physical-phone acceptance)
+**Current Phase:** Phase 3 complete (implementation and automated verification; Phase 3 phone acceptance pending)
 
-**Current Task:** 2.5 Security & Verification complete; next: 3.1 Entry Data Model (not started)
+**Current Task:** 3.6 Testing complete; next: 4.1 Dashboard (not started)
 
-**Overall Status:** In Progress; Phases 1 and 2 complete; Phase 3 not started
+**Overall Status:** In Progress; Phases 1–3 implementation complete; Phase 4 not started
 
 Update progress as development continues.
 
@@ -204,27 +204,29 @@ Verified through automated backend/navigation tests and user-confirmed physical-
 
 ### 3.1 Entry Data Model
 
-- [ ] Define journal entry schema.
-- [ ] Define Draft and Completed statuses.
-- [ ] Define Technical, Business, and People impact categories.
-- [ ] Define Pending, Known, and Not Measurable impact statuses.
-- [ ] Add optional impact metrics.
-- [ ] Add entry ownership and relationship validation.
-- [ ] Extend company deletion guards to all entries, including General / Adhoc work, drafts, and Trash, before enabling entry creation.
-- [ ] Require entry dependency checks, including drafts and Trash, before exposing any permanent project deletion.
-- [ ] Establish entry indexes.
-- [ ] Add revision tracking for concurrency protection.
+- [x] Define journal entry schema.
+- [x] Define Draft and Completed statuses.
+- [x] Define Technical, Business, and People impact categories.
+- [x] Define Pending, Known, and Not Measurable impact statuses.
+- [x] Add optional impact metrics.
+- [x] Add entry ownership and relationship validation.
+- [x] Extend company deletion guards to all entries, including General / Adhoc work, drafts, and Trash, before enabling entry creation.
+- [x] Require entry dependency checks, including drafts and Trash, before exposing any permanent project deletion.
+- [x] Establish entry indexes.
+- [x] Add revision tracking for concurrency protection.
+
+Schema and backend helpers are deployed to development. Task 3.1 introduced no entry CRUD endpoint or form saving; task 3.2 now applies content/completion validation, archived-project selection rules, server-owned metadata, and revision checks to the entry endpoints.
 
 ### 3.2 Entry Backend
 
-- [ ] Implement entry creation.
-- [ ] Implement entry retrieval.
-- [ ] Implement entry updates.
-- [ ] Implement draft retrieval.
-- [ ] Implement manual completion.
-- [ ] Validate completed entries separately from drafts.
-- [ ] Prevent invalid company/project relationships.
-- [ ] Prevent stale updates from overwriting newer revisions.
+- [x] Implement entry creation.
+- [x] Implement entry retrieval.
+- [x] Implement entry updates.
+- [x] Implement draft retrieval.
+- [x] Implement manual completion.
+- [x] Validate completed entries separately from drafts.
+- [x] Prevent invalid company/project relationships.
+- [x] Prevent stale updates from overwriting newer revisions.
 
 ### 3.3 Guided Entry Form
 
@@ -232,80 +234,82 @@ Use React Hook Form and Zod.
 
 **Step 1 — Task Details**
 
-- [ ] Date selection.
-- [ ] Company selection.
-- [ ] Project / General Adhoc selection.
-- [ ] Task title.
-- [ ] What I Did description.
+- [x] Date selection.
+- [x] Company selection.
+- [x] Project / General Adhoc selection.
+- [x] Task title.
+- [x] What I Did description.
 
 **Step 2 — Impact**
 
-- [ ] Who It Helped.
-- [ ] Impact category selection.
-- [ ] Company Impact description.
-- [ ] Impact status selection.
-- [ ] Optional impact metrics.
+- [x] Who It Helped.
+- [x] Impact category selection.
+- [x] Company Impact description.
+- [x] Impact status selection.
+- [x] Optional impact metrics.
 
 **Step 3 — Notes & Evidence**
 
-- [ ] Notes and Praise field.
-- [ ] Attachment section placeholder.
-- [ ] Entry review.
-- [ ] Mark as Completed action.
+- [x] Notes and Praise field.
+- [x] Attachment section placeholder.
+- [x] Entry review.
+- [x] Mark as Completed action.
 
 **Shared Form Behavior**
 
-- [ ] Add step progress indicator.
-- [ ] Support Previous and Next navigation.
-- [ ] Preserve values between steps.
-- [ ] Display field-specific validation errors.
-- [ ] Support editing existing entries.
-- [ ] Handle incomplete drafts.
+- [x] Add step progress indicator.
+- [x] Support Previous and Next navigation.
+- [x] Preserve values between steps.
+- [x] Display field-specific validation errors.
+- [x] Support editing existing entries.
+- [x] Handle incomplete drafts.
 
 Image upload functionality is implemented in Phase 4.
 
 ### 3.4 Debounced Autosave
 
-- [ ] Create and persist drafts automatically.
-- [ ] Implement debounced field updates.
-- [ ] Avoid writes when values have not changed.
-- [ ] Display Saving, Saved, and Save Failed states.
-- [ ] Implement manual Retry.
-- [ ] Add server-checked revision protection.
-- [ ] Handle conflicting or outdated updates.
-- [ ] Warn when leaving with unsaved changes.
-- [ ] Restore previously saved drafts.
-- [ ] Implement Discard Draft action.
-- [ ] Prevent duplicate draft creation.
+- [x] Create and persist drafts automatically.
+- [x] Implement debounced field updates.
+- [x] Avoid writes when values have not changed.
+- [x] Display Saving, Saved, and Save Failed states.
+- [x] Implement manual Retry.
+- [x] Add server-checked revision protection.
+- [x] Handle conflicting or outdated updates.
+- [x] Warn when leaving with unsaved changes.
+- [x] Restore previously saved drafts.
+- [x] Implement Discard Draft action.
+- [x] Prevent duplicate draft creation.
 
 ### 3.5 Entry Management
 
-- [ ] Build entry detail screen.
-- [ ] Implement editing.
-- [ ] Implement manual completion.
-- [ ] Distinguish entry status from impact status.
-- [ ] Display related company and project.
-- [ ] Provide appropriate success and error feedback.
+- [x] Build entry detail screen.
+- [x] Implement editing.
+- [x] Implement manual completion.
+- [x] Distinguish entry status from impact status.
+- [x] Display related company and project.
+- [x] Provide appropriate success and error feedback.
 
 ### 3.6 Testing
 
-- [ ] Test draft creation.
-- [ ] Test partial form submissions.
-- [ ] Test completed-entry validation.
-- [ ] Test autosave debounce behavior.
-- [ ] Test network failure and retry.
-- [ ] Test concurrent/stale updates.
-- [ ] Test reopening drafts.
-- [ ] Test backend authorization.
+- [x] Test draft creation.
+- [x] Test partial form submissions.
+- [x] Test completed-entry validation.
+- [x] Test autosave debounce behavior.
+- [x] Test network failure and retry.
+- [x] Test concurrent/stale updates.
+- [x] Test reopening drafts.
+- [x] Test backend authorization.
 
 **Phase 3 Completion Criteria**
 
-- [ ] Users can create complete journal entries.
-- [ ] Users can save and resume drafts.
-- [ ] Autosave works without unnecessary writes.
-- [ ] Save failures are visible and retryable.
-- [ ] Stale updates cannot silently overwrite newer content.
-- [ ] Entries remain private.
+- [x] Users can create complete journal entries.
+- [x] Users can save and resume drafts.
+- [x] Autosave works without unnecessary writes.
+- [x] Save failures are visible and retryable.
+- [x] Stale updates cannot silently overwrite newer content.
+- [x] Entries remain private.
+
+Implementation and automated acceptance are complete. Physical-phone acceptance remains user-run and pending; Phase 2's phone report does not establish Phase 3 device acceptance.
 
 **Deliverable:** Fully functional core work journal.
 
@@ -547,6 +551,110 @@ Add new blockers only when they affect implementation.
 ## 4. Progress Log
 
 Update after completing meaningful tasks or milestones.
+
+### 2026-11-26 — Phase 3 commit checkpoint
+
+**Scope:** User requested committing and pushing all Phase 3 work and subsequent form, keyboard, drawer, selection-spacing, status-badge, project-entry browsing, and pagination refinements. Final labels are Project/Choose project, Complete, Discard, and full-width Load More; entry editors have one save-status badge and detail has one Draft/Completed badge with impact status in the body. Entry pages fetch five records initially and three per additional request.
+
+**Verification:** Final `npm run check`, all 265 tests in 28 suites, Android bundle export, live connectivity/anonymous authorization checks, and Git whitespace checks passed. Development backend changes were deployed earlier; test journal records were in-memory only. Theme/token files are unchanged. Phase 3 physical-phone acceptance, including the corrected keyboard and selected-row spacing, has not been confirmed complete; source-control publication does not establish device acceptance. No emulator or phone was launched by the agent.
+
+### 2026-11-26 — Smaller entry pages
+
+**Changed:** The shared EntryList requests five entries on its initial page and three additional entries per Load more tap. This applies to Adhoc/project detail, all entries, and drafts. Existing cursor pagination fetches additional records from the backend rather than merely revealing already loaded rows. The button appears only while more results are available; the loading state retains fetched rows. Company/project option paging is unchanged.
+
+### 2026-11-26 — App-wide selected/pressed row spacing audit
+
+**User report:** Selected styling still appeared without inline padding after the earlier drawer-only utility change. The drawer row already contained px-4 in source; this alone did not establish the on-device appearance. Other company/project/action rows had no side inset at all.
+
+**Changed:** Applied a shared native 16-point horizontal inset to drawer options, selection/date controls, company/project/entry rows, project actions, and project-status filters. Labeled Buttons enforce the same inset for impact controls, entry filters, theme choices, and other actions while preserving caller style overrides and icon-only geometry. Drawer content explicitly retains its native 20-point gutter. Tab buttons have native 8-point side insets within the existing pill. Selected/unselected drawer tests now check resolved native padding, and tab navigation tests check the tab inset. Preserved existing tokens, themes, selection semantics, and reduced-motion behavior. Physical-phone appearance still requires user verification; no reinstall is needed.
+
+**Verification:** All 265 tests in 28 suites, `npm run check`, and Android bundle export passed. Native padding assertions cover selected and unselected drawer rows and tab controls; no device screenshot or agent phone inspection was performed.
+
+### 2026-11-26 — Show entries inside Adhoc and project details
+
+**User report / cause:** Saved test entries could not be seen from General / Adhoc because project detail had no entry list attached. Phase 3's existing journal destination remained available from Home → Open entries and drafts; no live records were inspected or modified to diagnose this missing view.
+
+**Changed:** Added an Entries section to General / Adhoc and named project details using a reusable, reactive, paginated EntryList. Completed rows open entry detail, and drafts resume the editor. Entry detail Back preserves the previous navigation context. The backend list accepts an optional project ID, validates ownership of the project and its company, and applies the owner/project/deletedAt index before pagination. Optional draft filtering also runs before pagination. Archived project history stays readable; Trash and other projects/users are excluded. Reviewed the organization reference sheet and preserved existing themes/tokens. This is a focused project-detail follow-up; the full Phase 4 dashboard/history/search work remains deferred.
+
+### 2026-11-26 — Header status badges and page loading
+
+**Changed:** Entry detail Edit Entry/Resume draft is full width. Removed the completion-success sentence and moved entry/impact statuses into right-aligned header badges. Entry editor save/entry statuses and project detail status use the same shared badge component and semantic theme colors. Complete (formerly Mark completed) now stays visible and disabled during work; ScreenFrame shows a page-level loading indicator for explicit entry actions. Ordinary autosave remains nonblocking and uses its header badge. Existing request locks, backend confirmation, failure/retry behavior, and field status controls are preserved. Phone appearance and loading transitions remain user-run checks; no reinstall is needed.
+
+### 2026-11-26 — Keyboard overlap correction after phone feedback
+
+**User report:** The initial keyboard-aware ScreenFrame change still allowed fields to be covered on the phone; its automated regression checks did not establish actual device keyboard correctness.
+
+**Correction:** FormField now registers each native input directly through a shared keyboard context, rather than relying on focus propagation through ScrollView. ScreenFrame measures the focused input and viewport against the keyboard's reported top edge, scrolls only when the field is obscured, and adds only any remaining viewport/keyboard overlap as scrollable space. This supports both already-resized viewports and overlay keyboards without adding keyboard height twice. Blur checks preserve a newly focused field; pending native callbacks are ignored after unmount or focus changes. Form refs and existing focus/blur handlers are preserved. No new native dependency or rebuild is needed. Actual phone acceptance remains pending.
+
+### 2026-11-26 — Keyboard-aware forms
+
+**Changed:** Shared ScreenFrame now adjusts its available height/padding for the keyboard and reveals the focused text input after keyboard presentation, focus changes, viewport resize, and content growth. This covers company, project, and entry forms, including multiline fields. Pending frame callbacks/listeners are cleaned up on unmount. Preserved scrolling, handled taps, safe areas, and the header; disabled duplicate automatic iOS keyboard insets. The installed Android manifest already uses adjustResize, so no native config or dependency change/reinstall is required. Actual keyboard geometry, long multiline editing, switching fields, and dismissal remain physical-phone checks.
+
+### 2026-11-26 — Entry save status in header
+
+**Changed:** Moved entry autosave status into the right-hand header action area, removing its standalone body row. Preserved live status announcements and all autosave behavior; detailed errors, offline feedback, Retry, and conflict controls remain in the form area. Themes and design tokens are unchanged.
+
+### 2026-11-26 — Independent selection-sheet motion
+
+**Follow-up:** Selection drawers now occupy at least half the current screen even with one option, while retaining the 90% maximum and internal scrolling for longer lists.
+
+**Changed:** Company/category choice sheets now use a stationary fading backdrop and independently translated drawer instead of sliding the entire transparent native Modal. The backdrop uses existing dark-valued theme colors, avoiding the white wash produced by dark-mode foreground. Entrance animations use the native driver, stop on interruption/unmount, and honor reduced motion. Selection, backdrop dismissal, Android Back, and the Close action remain immediate. All shared ChoiceSheet consumers inherit the fix; the separate project archive sheet is unchanged. Native phone appearance remains user-run; no rebuild is required.
+
+### 2026-11-26 — Inline date clearing
+
+**Changed:** All shared date inputs (entry work date and company employment dates) show a calendar icon when empty and an inline X after selection. X clears the value without opening the calendar; tapping the date text still changes it through the picker. Removed the separate visible Clear control. Preserved disabled states, accessible clear-action labels, touch targets, validation, and existing theme tokens. No native rebuild is required; phone appearance remains user-run.
+
+### 2026-11-26 — Entry form label and action refinement
+
+**Follow-up:** Removed the top Draft/Step caption and reduced entry-form/organization-field spacing from 24 to 16 points to show more fields in the viewport. Retained accessible step navigation and scrolling for keyboard, longer content, and large text. Physical fit remains user-verified on the phone.
+
+**Changed:** Removed the idle “Choose a company to start a draft” sentence and its empty spacing. Required entry fields now use danger-colored asterisks, with explanatory required/optional labels removed. Discard is text-only, uses the existing danger token at a light tint and shared pill radius, and shares the navigation action row with Next (or the final completion action). Previous remains available on later steps. Backend validation, autosave, and confirmation behavior are unchanged. Phone appearance review remains user-run; no native rebuild is needed.
+
+**Verification:** `npm run check` and all 22 relevant form, management, calendar, and organization-selector tests passed. Existing discard-confirmation tests now distinguish the footer Discard from the confirmation-sheet action.
+
+### 2026-11-25 — Phase 3.2 entry backend
+
+**Completed:** Deployed authenticated creation, private retrieval, paginated entry/draft retrieval, full-content updates, explicit completion, and draft discard. Shared Zod validation supports incomplete drafts and requires real dates, titles, and work descriptions for completion and subsequent completed-entry edits. Limits, unique impact categories, server metadata, owner/parent validation, and expected revisions are enforced on the backend. Archived projects cannot receive new entries or newly reassigned work; existing archived relationships remain editable. Creation keys are indexed per user; write IDs allow exact last-write retries after a lost response without another revision/write. Unchanged saves are no-ops. Discard soft-deletes drafts, leaving company/project guards intact. No permanent deletion endpoint was added.
+
+**Verification:** Backend tests cover partial content, required completion fields, authorization, validation, idempotency, optionals clearing, no-op writes, competing/stale writes, archived relationships, and Trash retention. An additional real Auth component runtime test completes an entry, rejects another user's access, then confirms session revocation immediately denies access. No live journal test content was created.
+
+### 2026-11-25 — Phase 3.3 guided entry form
+
+**Reviewed:** Visually inspected `entry-flow-sheet-v1.png` and `edit-and-confirmation-sheet-v1.png`, plus the reference index and main screen flow. Preserved all theme/token files.
+
+**Completed:** Replaced temporary Add Entry setup with the three-step React Hook Form/Zod form: calendar and company/category, title/work description, beneficiaries, multiple impact categories, independent impact status, optional metrics, notes, attachment placeholder, review, and explicit completion. Steps retain values, expose accessible progress/navigation, and use brief interruption-safe fades honoring reduced motion. Completion errors return to the appropriate fields. Real company/category labels appear in review. Existing archived project selections are preserved when editing. Attachments remain unavailable rather than simulated.
+
+**Verification:** Form tests cover cross-step values, completion errors, restoration, and explicit valid completion. Existing selector/calendar tests and an added archived-selection regression remain part of the full suite. Physical layout/keyboard/large-text appearance remains pending user phone review.
+
+### 2026-11-25 — Phase 3.4 debounced autosave
+
+**Completed:** Added a 700 ms serialized save queue with one acknowledged revision, debounced creation/update, normalization-based change detection, retryable exact requests, and per-editor creation keys. Changes made during a save are queued after acknowledgment. Offline/failed writes retain local text and never display Saved. Stale writes require explicit reload confirmation; no force overwrite is offered. Completion flushes current content before the backend validates it, including edits made after a failed completion attempt. A recovered creation response already changed by another client triggers conflict. Navigation warns about unsaved or in-flight work, and unmount cancels pending debounce callbacks. Confirmed discard moves a saved draft to Trash; cancellation retains it. Trash recovery UI remains Phase 5.
+
+**Verification:** Thirteen queue tests cover debounce, no-op changes, serialization, lost responses, offline retry, conflicts, completion/latest values, invalid fields (including before organization selection), discard, and unmount/late responses. UI tests verify retained text and retry requests. A real router flow selects General and autosaves one draft before leaving.
+
+### 2026-11-25 — Phase 3.5 entry management
+
+**Completed:** Added protected entry detail/edit routes and a paginated Entries/Drafts destination linked from Home. Draft rows resume their saved form; completed rows open detail with real company/project, work, impact, and notes. Edit preserves saved values and completed-entry validation. Completion feedback appears only after backend confirmation; entry status and impact status are shown independently. Loading, unavailable/Trash, empty, failure/retry, and preview isolation states are explicit. The full dashboard, search/history filters, image uploads, and Trash recovery remain their later phases.
+
+**Verification:** Seven management tests cover detail data, draft navigation, restoration, autosave, failed-save retry, backend-confirmed completion, cancel/confirm discard, and preview isolation. Protected entry/list/edit deep links are included in real router guard tests.
+
+### 2026-11-25 — Phase 3.6 final verification
+
+**Verification:** All 255 tests in 25 suites, `npm run check`, Android production bundle export, development deployment/code generation, and the extended live `npm run convex:check` passed. The live probe verifies anonymous entry-list rejection in addition to existing user/company probes. Backend entry workflows and two-user/revocation scenarios were tested in-memory; no synthetic private records were written to the live deployment. In-memory competing-save tests do not establish production concurrency/load characteristics. No emulator, Android launch, or manual preview server was started by the agent.
+
+**Phone acceptance pending:** In the existing calendar-enabled physical-phone development build, run `npm run start:dev`; no native dependency was added and no reinstall is required. Create an incomplete draft, pause and confirm Saved as draft, leave/reopen through Home → Open entries and drafts, and verify all three steps retain values. Check completion errors, valid completion/detail, editing completed records, independent impact status, and existing archived-project history. Disconnect and type: failed/unsaved state must retain text and Retry must save once after reconnecting. Check leaving with unsaved work, discard cancellation/confirmation, separate-account privacy, light/dark themes, keyboard scrolling/Save reachability, large text, and reduced motion. Where possible, edit the same draft in two sessions to check the conflict/reload warning. Draft discard is retained but Trash recovery is not yet exposed; entry attachments remain unavailable.
+
+**Next:** Task 4.1 — Dashboard (not started). Phase 3 phone acceptance remains user-run and is separate from the user-authorized commit/push.
+
+### 2026-11-25 — Phase 3.1 entry data model
+
+**Completed:** Added `entries` with native owner/company/project IDs, optional draft journal fields, independent Draft/Completed and impact statuses, multiple impact categories, optional free-text metrics, notes, timestamps, Trash metadata, and server-managed revision foundation. Six indexes cover owner/date history, active drafts, company/project history, and unfiltered company/project dependency checks. Added ordinary private helpers for owned entry/parent resolution, dependency guards, and safe revision advancement from revision 1. Company removal now blocks all related entries before General cleanup, and also checks General's project ID independently to fail closed on mismatched company references. Permanent project deletion remains unavailable; any future implementation must use the project dependency guard in the same authorized transaction.
+
+**Verification:** `npm run check` passed and all 215 tests in 21 suites passed. Thirty new model tests cover incomplete drafts, optional metrics, valid/invalid status/category shapes, private ownership and relationships, archived/Trash history, active/completed/deleted General dependencies, corrupt references, indexed isolation, invalid/exhausted revisions, and stale-save rejection inside a test transaction. Development deployment succeeded with all six entry indexes and regenerated Convex API types; `npm run convex:check` passed afterward. Test entry writes were in-memory only; no live journal content was created or printed.
+
+**Scope:** Stopped at 3.1. The schema validates field types and enum values; real calendar dates, content limits, category uniqueness, required completion fields, and lifecycle-specific write rules remain task 3.2. Revision helpers establish the contract but do not replace endpoint enforcement in that task. Existing company/project behavior remains covered by the full regression suite. No application screens, design tokens, themes, or native dependencies changed. No new phone acceptance or reinstall is needed for this backend-only task; no Android launch or manual preview server was started. Android bundle export was not repeated because no client bundle code changed.
+
+**Next:** Task 3.2 — Entry Backend. Use the ownership/relationship helpers before reading or writing, derive metadata on the server, enforce Draft versus Completed requirements, and apply expected-revision checks in the same mutation as each update/completion.
 
 ### 2026-11-25 — Phase 2 physical-phone acceptance
 

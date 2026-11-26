@@ -10,6 +10,7 @@ import { Feedback } from '@/components/ui/feedback';
 import { Typography } from '@/components/ui/typography';
 import { useTheme } from '@/lib/theme';
 import { useGeneralProject } from '@/hooks/use-general-project';
+import { ROW_INSET_STYLE } from '@/components/ui/layout';
 import {
   ProjectStatusSelector,
   type ProjectFilter,
@@ -20,6 +21,7 @@ function ProjectRow({ project }: { project: Doc<'projects'> }) {
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`View project ${project.name}`}
+      style={ROW_INSET_STYLE}
       accessibilityHint={`${project.isGeneral ? 'Built in' : project.status === 'active' ? 'Active' : 'Archived'}. Opens project details.`}
       onPress={() =>
         router.push({

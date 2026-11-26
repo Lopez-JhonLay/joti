@@ -24,6 +24,7 @@ import ProjectDetailRoute from '@/app/(protected)/project/[projectId]/index';
 import EditProjectRoute from '@/app/(protected)/project/[projectId]/edit';
 import AddEntryScreen from '@/app/(protected)/add-entry';
 import type { Doc, Id } from '@/convex/_generated/dataModel';
+import type { EntrySnapshot } from '@/lib/entry-save-queue';
 
 const mockCompanyId = 'company' as Id<'companies'>;
 let mockCompany: Doc<'companies'>;
@@ -39,6 +40,20 @@ const mockEdit = jest.fn();
 const mockProjectSave = jest.fn();
 const mockProjectEdit = jest.fn();
 const mockProjectStatus = jest.fn();
+const mockEntryCreate = jest.fn(
+  async (
+    input: EntrySnapshot & { creationKey: string },
+  ): Promise<Doc<'entries'>> => ({
+    ...input,
+    _id: 'entry' as Id<'entries'>,
+    _creationTime: 1,
+    userId: mockCompany.userId,
+    revision: 1,
+    status: 'draft',
+    createdAt: 1,
+    updatedAt: 1,
+  }),
+);
 const mockListeners = new Set<() => void>();
 const mockStore = {
   subscribe: (listener: () => void) => {
@@ -65,6 +80,7 @@ jest.mock('convex/react', () => ({
       'projects:create': mockProjectSave,
       'projects:update': mockProjectEdit,
       'projects:setStatus': mockProjectStatus,
+      'entries:create': mockEntryCreate,
     })[mockGetFunctionName(ref)],
   useQuery: (
     ref: Parameters<typeof mockGetFunctionName>[0],
@@ -96,13 +112,15 @@ jest.mock('convex/react', () => ({
       .useSyncExternalStore(mockStore.subscribe, mockStore.getSnapshot);
     return {
       results:
-        mockGetFunctionName(ref) === 'companies:list'
-          ? [mockCompany]
-          : mockProjectDetail &&
-              (!args?.status ||
-                args.status === mockProjectDetail.project.status)
-            ? [mockProjectDetail.project]
-            : [],
+        mockGetFunctionName(ref) === 'entries:list'
+          ? []
+          : mockGetFunctionName(ref) === 'companies:list'
+            ? [mockCompany]
+            : mockProjectDetail &&
+                (!args?.status ||
+                  args.status === mockProjectDetail.project.status)
+              ? [mockProjectDetail.project]
+              : [],
       status: 'Exhausted',
     };
   },
@@ -318,7 +336,7 @@ test('General is pinned in company details and its detail route has no edit/arch
   expect(screen.queryByRole('button', { name: 'Archive project' })).toBeNull();
 });
 
-test('Add Entry selects the company’s General category without creating a journal record', async () => {
+test('Add Entry selects General and autosaves a real draft before leaving', async () => {
   await renderRouter(routes, { initialUrl: '/' });
   await fireEvent.press(
     screen.getAllByRole('button', { name: 'Add Entry' })[0],
@@ -326,18 +344,24 @@ test('Add Entry selects the company’s General category without creating a jour
   await waitFor(() => expect(screen).toHavePathname('/add-entry'));
   await fireEvent.press(screen.getByRole('button', { name: 'Company' }));
   await fireEvent.press(screen.getByRole('radio', { name: 'Acme' }));
-  expect(screen.getByRole('button', { name: 'Project / category' })).toHaveProp(
+  expect(screen.getByRole('button', { name: 'Project' })).toHaveProp(
     'accessibilityValue',
     { text: 'General / Adhoc' },
   );
-  await fireEvent.press(
-    screen.getByRole('button', { name: 'Project / category' }),
-  );
+  await fireEvent.press(screen.getByRole('button', { name: 'Project' }));
   expect(
     screen.getByRole('radio', { name: 'General / Adhoc', checked: true }),
   ).toBeTruthy();
   await fireEvent.press(screen.getByRole('radio', { name: 'General / Adhoc' }));
-  await fireEvent.press(screen.getByRole('button', { name: 'Close' }));
+  await waitFor(() => expect(screen.getByText('Saved as draft')).toBeTruthy());
+  expect(mockEntryCreate).toHaveBeenCalledTimes(1);
+  expect(mockEntryCreate).toHaveBeenCalledWith(
+    expect.objectContaining({
+      companyId: mockCompanyId,
+      projectId: mockGeneral._id,
+    }),
+  );
+  await fireEvent.press(screen.getByRole('button', { name: 'Back' }));
   await waitFor(() => expect(screen).toHavePathname('/'));
   expect(mockSave).not.toHaveBeenCalled();
   expect(mockProjectSave).not.toHaveBeenCalled();

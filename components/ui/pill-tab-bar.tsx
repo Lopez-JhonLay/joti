@@ -174,6 +174,7 @@ export function PillTabButton(props: BottomTabBarButtonProps) {
           borderRadius: layout.radius.pill,
           overflow: 'hidden',
           minHeight: layout.touchTarget,
+          paddingHorizontal: layout.spacing[2],
         },
       ]}
     >

@@ -49,6 +49,10 @@
     @apply border-transparent bg-transparent active:bg-elevated;
   }
 
+  .control-danger-soft {
+    @apply border-danger/20 bg-danger/10 active:bg-danger/20;
+  }
+
   .inline-link {
     @apply font-medium text-body text-link underline;
   }

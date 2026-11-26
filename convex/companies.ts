@@ -6,6 +6,10 @@ import { ConvexError, v } from 'convex/values';
 import { mutation, query } from './_generated/server';
 import { requireUserId } from './lib/auth';
 import { requireOwnedCompany } from './lib/organization';
+import {
+  requireNoCompanyEntries,
+  requireNoProjectEntries,
+} from './lib/entries';
 import { ensureGeneralProject } from './lib/general_projects';
 import { companyFields, companyIdArgs } from './lib/organization_validators';
 import {
@@ -104,7 +108,7 @@ export const remove = mutation({
         message: 'Companies with named projects cannot be deleted.',
       });
     }
-    // Add the entry dependency check when the entries table arrives in task 3.1.
+    await requireNoCompanyEntries(ctx, companyId);
     // The built-in category can only be removed with its otherwise empty parent.
     const general = await ctx.db
       .query('projects')
@@ -118,6 +122,8 @@ export const remove = mutation({
           code: 'NOT_FOUND',
           message: 'This record is unavailable.',
         });
+      // Also guard the category's ID if a corrupt entry's companyId disagrees.
+      await requireNoProjectEntries(ctx, general._id);
       await ctx.db.delete('projects', general._id);
     }
     await ctx.db.delete('companies', companyId);

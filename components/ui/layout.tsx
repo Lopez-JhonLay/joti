@@ -1,5 +1,10 @@
 import { View } from 'react-native';
 import type { ViewProps } from 'react-native';
+import { layout } from '@/constants/design-tokens';
+
+export const ROW_INSET_STYLE = {
+  paddingHorizontal: layout.spacing[4],
+} as const;
 
 export function Container({ className = '', ...props }: ViewProps) {
   return <View className={`screen-container ${className}`} {...props} />;

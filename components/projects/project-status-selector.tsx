@@ -1,6 +1,7 @@
 import { Pressable, View } from 'react-native';
 import { Typography } from '@/components/ui/typography';
 import type { Doc } from '@/convex/_generated/dataModel';
+import { ROW_INSET_STYLE } from '@/components/ui/layout';
 
 type ProjectStatus = Doc<'projects'>['status'];
 export type ProjectFilter = ProjectStatus | 'all';
@@ -32,6 +33,7 @@ export function ProjectStatusSelector({
       {options.map((option) => (
         <Pressable
           key={option.value}
+          style={ROW_INSET_STYLE}
           accessibilityRole="radio"
           accessibilityLabel={option.label}
           accessibilityState={{ checked: value === option.value, disabled }}

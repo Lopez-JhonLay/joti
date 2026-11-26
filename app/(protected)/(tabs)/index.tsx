@@ -9,7 +9,7 @@ export default function HomeScreen() {
     <PlaceholderScreen
       patterned
       title="Home"
-      description="Your recent accomplishments and unfinished drafts will appear here. This is a navigation preview."
+      description="Record your work and return to your saved entries and drafts."
     >
       <ResponsivePair>
         <Card className="md:flex-1">
@@ -32,9 +32,9 @@ export default function HomeScreen() {
         <Card className="md:flex-1">
           <Typography variant="title">Build your story over time.</Typography>
           <Typography className="text-muted">
-            Company and project organization is coming next. No entries have
-            been saved in this preview.
+            Keep your journal organized by company and project.
           </Typography>
+          <TextLink href="/entries">Open entries and drafts</TextLink>
           <TextLink href="/companies">View companies</TextLink>
         </Card>
       </ResponsivePair>

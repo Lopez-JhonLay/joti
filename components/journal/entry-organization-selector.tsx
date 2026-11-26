@@ -11,11 +11,10 @@ import { Button } from '@/components/ui/button';
 import { ChoiceSheet } from '@/components/ui/choice-sheet';
 import { Feedback } from '@/components/ui/feedback';
 import { Typography } from '@/components/ui/typography';
+import { ROW_INSET_STYLE } from '@/components/ui/layout';
 
-export type EntryOrganization = {
-  companyId: Id<'companies'>;
-  projectId: Id<'projects'>;
-};
+import type { EntryOrganization } from '@/types/entries';
+export type { EntryOrganization } from '@/types/entries';
 
 function SelectionField({
   label,
@@ -30,7 +29,10 @@ function SelectionField({
 }) {
   return (
     <View className="gap-2">
-      <Typography variant="label">{label}</Typography>
+      <Typography variant="label">
+        {label}
+        <Typography className="text-danger"> *</Typography>
+      </Typography>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={label}
@@ -39,6 +41,7 @@ function SelectionField({
         accessibilityState={{ disabled: !!disabled }}
         disabled={disabled}
         onPress={onPress}
+        style={ROW_INSET_STYLE}
         className={`form-input flex-row items-center justify-between gap-3 border-border active:bg-elevated ${disabled ? 'opacity-50' : ''}`}
       >
         {({ pressed }) => (
@@ -70,7 +73,8 @@ function ChoiceRow({
       accessibilityState={{ checked }}
       accessibilityHint={detail}
       onPress={onPress}
-      className={`min-h-touch flex-row items-center gap-3 border-b border-border py-4 ${checked ? 'bg-elevated' : 'active:bg-elevated'}`}
+      style={ROW_INSET_STYLE}
+      className={`min-h-touch flex-row items-center gap-3 border-b border-border px-4 py-4 ${checked ? 'bg-elevated' : 'active:bg-elevated'}`}
     >
       <View className="flex-1 gap-1">
         <Typography className="font-semibold">{label}</Typography>
@@ -194,11 +198,23 @@ function ProjectChoices({
 
 export function EntryOrganizationSelector({
   onChange,
+  initialSelection,
+  preserveArchived = false,
+  onLabelsChange,
 }: {
   onChange?: (selection: EntryOrganization | null) => void;
+  initialSelection?: EntryOrganization;
+  preserveArchived?: boolean;
+  onLabelsChange?: (
+    labels: { company: string; project: string } | null,
+  ) => void;
 }) {
-  const [companyId, setCompanyId] = useState<Id<'companies'> | undefined>();
-  const [projectId, setProjectId] = useState<Id<'projects'> | undefined>();
+  const [companyId, setCompanyId] = useState<Id<'companies'> | undefined>(
+    initialSelection?.companyId,
+  );
+  const [projectId, setProjectId] = useState<Id<'projects'> | undefined>(
+    initialSelection?.projectId,
+  );
   const [sheet, setSheet] = useState<'company' | 'project' | null>(null);
   const company = useQuery(
     api.companies.get,
@@ -211,7 +227,10 @@ export function EntryOrganizationSelector({
   );
   const waitingForProject = !!projectId && requestedProject === undefined;
   const requestedAvailable =
-    requestedProject?.project.status === 'active' &&
+    !!requestedProject &&
+    (requestedProject?.project.status === 'active' ||
+      (preserveArchived &&
+        requestedProject?.project._id === initialSelection?.projectId)) &&
     requestedProject.project.companyId === company?._id;
   const selection =
     company && !waitingForProject
@@ -221,6 +240,15 @@ export function EntryOrganizationSelector({
       : null;
   const selectedCompanyId = company?._id;
   const selectedProjectId = selection?._id;
+  const companyName = company?.name;
+  const projectName = selection?.name;
+  useEffect(() => {
+    onLabelsChange?.(
+      companyName && projectName
+        ? { company: companyName, project: projectName }
+        : null,
+    );
+  }, [companyName, projectName, onLabelsChange]);
   useEffect(() => {
     onChange?.(
       selectedCompanyId && selectedProjectId
@@ -230,7 +258,7 @@ export function EntryOrganizationSelector({
   }, [selectedCompanyId, selectedProjectId, onChange]);
 
   return (
-    <View className="gap-6">
+    <View className="gap-4">
       <SelectionField
         label="Company"
         value={
@@ -250,7 +278,7 @@ export function EntryOrganizationSelector({
         />
       )}
       <SelectionField
-        label="Project / category"
+        label="Project"
         value={
           selection?.name ??
           (waitingForProject
@@ -306,10 +334,7 @@ export function EntryOrganizationSelector({
         </ChoiceSheet>
       )}
       {sheet === 'project' && company && general && (
-        <ChoiceSheet
-          title="Choose project / category"
-          onClose={() => setSheet(null)}
-        >
+        <ChoiceSheet title="Choose project" onClose={() => setSheet(null)}>
           <ProjectChoices
             companyId={company._id}
             general={general}

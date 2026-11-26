@@ -10,10 +10,13 @@
 
 import type * as auth from "../auth.js";
 import type * as companies from "../companies.js";
+import type * as entries from "../entries.js";
 import type * as general_projects from "../general_projects.js";
 import type * as health from "../health.js";
 import type * as http from "../http.js";
 import type * as lib_auth from "../lib/auth.js";
+import type * as lib_entries from "../lib/entries.js";
+import type * as lib_entry_validators from "../lib/entry_validators.js";
 import type * as lib_general_projects from "../lib/general_projects.js";
 import type * as lib_mobile_auth from "../lib/mobile_auth.js";
 import type * as lib_organization from "../lib/organization.js";
@@ -30,10 +33,13 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   companies: typeof companies;
+  entries: typeof entries;
   general_projects: typeof general_projects;
   health: typeof health;
   http: typeof http;
   "lib/auth": typeof lib_auth;
+  "lib/entries": typeof lib_entries;
+  "lib/entry_validators": typeof lib_entry_validators;
   "lib/general_projects": typeof lib_general_projects;
   "lib/mobile_auth": typeof lib_mobile_auth;
   "lib/organization": typeof lib_organization;

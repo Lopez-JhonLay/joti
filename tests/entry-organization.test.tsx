@@ -11,7 +11,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import type { Doc, Id } from '@/convex/_generated/dataModel';
 import { EntryOrganizationSelector } from '@/components/journal/entry-organization-selector';
-import { EntrySetupScreen } from '@/components/journal/entry-setup-screen';
+import { EntryEditorScreen as EntrySetupScreen } from '@/components/journal/entry-editor-screen';
 import { ThemeProvider } from '@/lib/theme';
 
 const owner = 'owner' as Id<'users'>;
@@ -58,6 +58,7 @@ let mockPreview = false;
 
 jest.mock('convex/react', () => ({
   ...jest.requireActual('convex/react'),
+  useConvex: () => ({ query: jest.fn() }),
   useQuery: jest.fn(),
   useMutation: jest.fn(),
   usePaginatedQuery: jest.fn(),
@@ -71,6 +72,7 @@ jest.mock('@/lib/navigation-preview', () => ({
 }));
 jest.mock('expo-router', () => ({
   ...jest.requireActual('expo-router'),
+  usePreventRemove: jest.fn(),
   router: {
     canGoBack: () => true,
     back: jest.fn(),
@@ -160,11 +162,9 @@ async function chooseCompany(name = 'Acme') {
 test('General / Adhoc is selected by default and can be reselected after a named project', async () => {
   const onChange = jest.fn();
   await render(<EntryOrganizationSelector onChange={onChange} />, { wrapper });
-  expect(
-    screen.getByRole('button', { name: 'Project / category' }),
-  ).toBeDisabled();
+  expect(screen.getByRole('button', { name: 'Project' })).toBeDisabled();
   await chooseCompany();
-  expect(screen.getByRole('button', { name: 'Project / category' })).toHaveProp(
+  expect(screen.getByRole('button', { name: 'Project' })).toHaveProp(
     'accessibilityValue',
     { text: 'General / Adhoc' },
   );
@@ -172,23 +172,22 @@ test('General / Adhoc is selected by default and can be reselected after a named
     companyId: firstId,
     projectId: generalOne._id,
   });
-  await fireEvent.press(
-    screen.getByRole('button', { name: 'Project / category' }),
-  );
+  await fireEvent.press(screen.getByRole('button', { name: 'Project' }));
   expect(
     screen.getByRole('radio', { name: 'General / Adhoc', checked: true }),
-  ).toBeTruthy();
+  ).toHaveStyle({ paddingHorizontal: 16 });
   expect(
     screen.getAllByRole('radio', { name: 'General / Adhoc' }),
   ).toHaveLength(1);
+  expect(screen.getByRole('radio', { name: 'Atlas' })).toHaveStyle({
+    paddingHorizontal: 16,
+  });
   await fireEvent.press(screen.getByRole('radio', { name: 'Atlas' }));
   expect(onChange).toHaveBeenLastCalledWith({
     companyId: firstId,
     projectId: atlas._id,
   });
-  await fireEvent.press(
-    screen.getByRole('button', { name: 'Project / category' }),
-  );
+  await fireEvent.press(screen.getByRole('button', { name: 'Project' }));
   await fireEvent.press(screen.getByRole('radio', { name: 'General / Adhoc' }));
   expect(onChange).toHaveBeenLastCalledWith({
     companyId: firstId,
@@ -201,18 +200,14 @@ test('switching companies clears the previous project and chooses the new compan
   const onChange = jest.fn();
   await render(<EntryOrganizationSelector onChange={onChange} />, { wrapper });
   await chooseCompany();
-  await fireEvent.press(
-    screen.getByRole('button', { name: 'Project / category' }),
-  );
+  await fireEvent.press(screen.getByRole('button', { name: 'Project' }));
   await fireEvent.press(screen.getByRole('radio', { name: 'Atlas' }));
   await chooseCompany('Other Company');
   expect(onChange).toHaveBeenLastCalledWith({
     companyId: secondId,
     projectId: generalTwo._id,
   });
-  await fireEvent.press(
-    screen.getByRole('button', { name: 'Project / category' }),
-  );
+  await fireEvent.press(screen.getByRole('button', { name: 'Project' }));
   expect(screen.queryByRole('radio', { name: 'Atlas' })).toBeNull();
 });
 
@@ -222,9 +217,7 @@ test('a newly archived project falls back to General and cannot be chosen again'
     wrapper,
   });
   await chooseCompany();
-  await fireEvent.press(
-    screen.getByRole('button', { name: 'Project / category' }),
-  );
+  await fireEvent.press(screen.getByRole('button', { name: 'Project' }));
   await fireEvent.press(screen.getByRole('radio', { name: 'Atlas' }));
   projects.set(atlas._id, { ...atlas, status: 'archived' });
   await view.rerender(<EntryOrganizationSelector onChange={onChange} />);
@@ -233,9 +226,7 @@ test('a newly archived project falls back to General and cannot be chosen again'
     projectId: generalOne._id,
   });
   expect(screen.getByText(/General \/ Adhoc is selected instead/)).toBeTruthy();
-  await fireEvent.press(
-    screen.getByRole('button', { name: 'Project / category' }),
-  );
+  await fireEvent.press(screen.getByRole('button', { name: 'Project' }));
   expect(screen.queryByRole('radio', { name: 'Atlas' })).toBeNull();
 });
 
@@ -248,9 +239,7 @@ test('company removal clears the emitted relationship instead of retaining stale
   companies.delete(firstId);
   await view.rerender(<EntryOrganizationSelector onChange={onChange} />);
   expect(onChange).toHaveBeenLastCalledWith(null);
-  expect(
-    screen.getByRole('button', { name: 'Project / category' }),
-  ).toBeDisabled();
+  expect(screen.getByRole('button', { name: 'Project' })).toBeDisabled();
   expect(screen.getByRole('alert')).toHaveTextContent(/Choose another company/);
 });
 
@@ -324,4 +313,25 @@ test('Add Entry preview mounts no private hooks, while empty company choices lea
   await fireEvent.press(screen.getByRole('button', { name: 'Add company' }));
   expect(router.push).toHaveBeenCalledWith('/company/new');
   expect(screen.queryByRole('button', { name: 'Save entry' })).toBeNull();
+});
+
+test('editing preserves an existing archived project instead of silently moving history to General', async () => {
+  projects.set(atlas._id, { ...atlas, status: 'archived' });
+  const onChange = jest.fn();
+  await render(
+    <EntryOrganizationSelector
+      initialSelection={{ companyId: firstId, projectId: atlas._id }}
+      preserveArchived
+      onChange={onChange}
+    />,
+    { wrapper },
+  );
+  expect(screen.getByRole('button', { name: 'Project' })).toHaveProp(
+    'accessibilityValue',
+    { text: atlas.name },
+  );
+  expect(onChange).toHaveBeenLastCalledWith({
+    companyId: firstId,
+    projectId: atlas._id,
+  });
 });

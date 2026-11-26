@@ -11,10 +11,12 @@ import { requestErrorMessage } from '@/lib/request-errors';
 import { AnimatedIcon } from '@/components/ui/animated-icon';
 import { Button } from '@/components/ui/button';
 import { Feedback } from '@/components/ui/feedback';
-import { Divider } from '@/components/ui/layout';
+import { Divider, ROW_INSET_STYLE } from '@/components/ui/layout';
 import { QueryBoundary } from '@/components/ui/query-boundary';
 import { ScreenFrame } from '@/components/ui/screen-frame';
 import { Typography } from '@/components/ui/typography';
+import { StatusBadge } from '@/components/ui/status-badge';
+import { EntryList } from '@/components/journal/entry-list';
 import { ProjectArchiveSheet } from './project-archive-sheet';
 import { ProjectForm } from './project-form';
 
@@ -199,13 +201,16 @@ function ProjectDetails({
     <ScreenFrame
       title={project.name}
       onBack={() => backFromProject(company._id)}
+      actions={
+        <StatusBadge
+          label={
+            project.isGeneral ? 'Built in' : archived ? 'Archived' : 'Active'
+          }
+          tone={archived ? 'neutral' : 'info'}
+        />
+      }
     >
       <ConnectionNotice />
-      <View className="self-start rounded-card bg-elevated px-3 py-1">
-        <Typography variant="label" className="text-link">
-          {project.isGeneral ? 'Built in' : archived ? 'Archived' : 'Active'}
-        </Typography>
-      </View>
       <View className="gap-3">
         <Typography variant="label">{company.name}</Typography>
         <Typography>
@@ -213,6 +218,10 @@ function ProjectDetails({
         </Typography>
       </View>
       <Divider />
+      <View className="gap-3">
+        <Typography variant="title">Entries</Typography>
+        <EntryList key={project._id} projectId={project._id} />
+      </View>
       {busy && <Feedback message="Updating project…" />}
       {error && !targetStatus && <Feedback error message={error} />}
       {!project.isGeneral && (
@@ -220,6 +229,7 @@ function ProjectDetails({
           <Pressable
             accessibilityRole="button"
             accessibilityLabel="Edit project"
+            style={ROW_INSET_STYLE}
             accessibilityState={{ disabled: busy }}
             disabled={busy}
             onPress={() =>
@@ -243,6 +253,7 @@ function ProjectDetails({
             accessibilityLabel={
               archived ? 'Restore project' : 'Archive project'
             }
+            style={ROW_INSET_STYLE}
             accessibilityState={{
               disabled: busy || !isWebSocketConnected,
               busy,

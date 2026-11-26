@@ -23,6 +23,9 @@ import EditCompanyRoute from '@/app/(protected)/company/[companyId]/edit';
 import NewProjectRoute from '@/app/(protected)/company/[companyId]/project/new';
 import ProjectDetailRoute from '@/app/(protected)/project/[projectId]/index';
 import EditProjectRoute from '@/app/(protected)/project/[projectId]/edit';
+import EntriesRoute from '@/app/(protected)/entries';
+import EntryDetailRoute from '@/app/(protected)/entry/[entryId]/index';
+import EditEntryRoute from '@/app/(protected)/entry/[entryId]/edit';
 import { layout } from '@/constants/design-tokens';
 
 const routes = {
@@ -42,6 +45,9 @@ const routes = {
   '(protected)/company/[companyId]/project/new': NewProjectRoute,
   '(protected)/project/[projectId]/index': ProjectDetailRoute,
   '(protected)/project/[projectId]/edit': EditProjectRoute,
+  '(protected)/entries': EntriesRoute,
+  '(protected)/entry/[entryId]/index': EntryDetailRoute,
+  '(protected)/entry/[entryId]/edit': EditEntryRoute,
 };
 
 afterEach(() => jest.restoreAllMocks());
@@ -58,6 +64,9 @@ it.each([
   '/company/example/project/new',
   '/project/example',
   '/project/example/edit',
+  '/entries',
+  '/entry/example',
+  '/entry/example/edit',
 ])(
   'redirects a protected deep link (%s) to the auth placeholder',
   async (initialUrl) => {
@@ -95,6 +104,7 @@ it('navigates the preview tabs, opens and closes Add Entry, then revokes access'
   expect(screen.getByRole('button', { name: /^Home, tab/ })).toHaveStyle({
     borderRadius: layout.radius.pill,
     overflow: 'hidden',
+    paddingHorizontal: layout.spacing[2],
   });
 
   for (const name of ['History', 'Companies', 'Settings', 'Home']) {
@@ -130,7 +140,7 @@ it('navigates the preview tabs, opens and closes Add Entry, then revokes access'
     screen.getAllByRole('button', { name: 'Add Entry' })[0],
   );
   expect(screen).toHavePathname('/add-entry');
-  await fireEvent.press(screen.getByRole('button', { name: 'Close' }));
+  await fireEvent.press(screen.getByRole('button', { name: 'Back' }));
   expect(screen).toHavePathname('/');
 
   await fireEvent.press(screen.getByRole('button', { name: /^Settings, tab/ }));

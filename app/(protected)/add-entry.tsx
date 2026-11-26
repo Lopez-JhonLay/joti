@@ -1,5 +1,5 @@
-import { EntrySetupScreen } from '@/components/journal/entry-setup-screen';
+import { EntryEditorScreen } from '@/components/journal/entry-editor-screen';
 
 export default function AddEntryScreen() {
-  return <EntrySetupScreen />;
+  return <EntryEditorScreen />;
 }
